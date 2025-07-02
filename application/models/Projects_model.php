@@ -722,7 +722,7 @@ class Projects_model extends App_Model
         $data['project_cost'] = !empty($data['project_cost']) ? $data['project_cost'] : null;
         $data['estimated_hours'] = !empty($data['estimated_hours']) ? $data['estimated_hours'] : null;
 
-        $data['start_date'] = to_sql_date($data['start_date']);
+        $data['start_date'] = to_sql_date($data['start_date']) ?? date('Y-m-d');
 
         if (!empty($data['deadline'])) {
             $data['deadline'] = to_sql_date($data['deadline']);
@@ -973,7 +973,7 @@ class Projects_model extends App_Model
             $data['deadline'] = null;
         }
 
-        $data['start_date'] = to_sql_date($data['start_date']);
+        $data['start_date'] = to_sql_date($data['start_date']) ?? date('Y-m-d');
         if ($data['billing_type'] == 1) {
             $data['project_rate_per_hour'] = 0;
         } elseif ($data['billing_type'] == 2) {
