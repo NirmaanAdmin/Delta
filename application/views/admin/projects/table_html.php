@@ -7,7 +7,7 @@ $table_data = [
    _l('project_name'),
     [
          'name'     => _l('project_customer'),
-         'th_attrs' => ['class' => isset($client) ? 'not_visible' : ''],
+         'th_attrs' => ['class' => 'not_visible'],
     ],
    _l('tags'),
    _l('project_progress'),

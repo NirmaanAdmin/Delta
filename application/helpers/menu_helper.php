@@ -89,7 +89,7 @@ function app_init_admin_sidebar_menu_items()
     ) {
         $CI->app_menu->add_sidebar_children_item('sales', [
             'slug'     => 'invoices',
-            'name'     => _l('Client Invoices'),
+            'name'     => _l('Invoices'),
             'href'     => admin_url('invoices'),
             'position' => 15,
             'badge'    => [],
@@ -102,7 +102,7 @@ function app_init_admin_sidebar_menu_items()
     ) {
         $CI->app_menu->add_sidebar_children_item('sales', [
             'slug'     => 'payments',
-            'name'     => _l('Client Payments'),
+            'name'     => _l('Payments'),
             'href'     => admin_url('payments'),
             'position' => 20,
             'badge'    => [],
