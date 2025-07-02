@@ -31,7 +31,7 @@ $lang['meeting_tasks'] = 'Tasks'; // Add this
 $lang['meeting_api_settings'] = 'API Settings'; // Add this if you intend to use it
 
 $lang['meeting_management_module'] = 'Meeting Management Module';
-$lang['meeting_management_module_description'] = 'Manage meetings, agendas, and tasks directly under the project section.';
+$lang['meeting_management_module_description'] = 'Manage meetings, agendas, and tasks directly under the company section.';
 
 // Success & Error Messages
 $lang['meeting_agenda_created_success'] = 'Agenda successfully created.';
@@ -41,11 +41,11 @@ $lang['meeting_signature_saved_success'] = 'Signature saved successfully.';
 $lang['meeting_error'] = 'An error occurred. Please try again.';
 
 $lang['select_client'] = 'Select Client';
-$lang['select_project'] = 'Select Project';
-$lang['no_projects_available'] = 'No Projects Available';
+$lang['select_project'] = 'Select Company';
+$lang['no_projects_available'] = 'No Company Available';
 
 
-$lang['project'] = 'Project';
+$lang['project'] = 'Company';
 $lang['options'] = 'Options';
 $lang['edit'] = 'Edit';
 $lang['delete'] = 'Delete';
@@ -127,8 +127,8 @@ $lang['view_meeting'] = 'View Meeting';
 $lang['meeting_notes'] = 'Meeting Notes';
 $lang['no_meetings_found'] = 'No meetings found';
 $lang['meeting_updated_success'] = 'Meeting updated successfully';
-$lang['filter_by_project'] = 'Project';
-$lang['all_projects'] = 'All Projects';
+$lang['filter_by_project'] = 'Company';
+$lang['all_projects'] = 'All Company';
 $lang['meeting_critical_agenda'] = 'Critical Tracker';
 $lang['change_status_successfully'] = 'Status Changed Successfully';
 $lang['change_status_fail'] = 'Change Status Failed';
