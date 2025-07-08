@@ -191,7 +191,7 @@ foreach ($rResult as $key => $aRow) {
     $row[] = $toggleActive;
 
 
-    $row[] = _dt($aRow['datecreated']);
+    $row[] = date('d M, Y H:i A', strtotime($aRow['datecreated']));
 
     // Custom fields add values
     foreach ($customFieldsColumns as $customFieldColumn) {
