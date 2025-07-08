@@ -10,12 +10,7 @@ $table_data = [
          'th_attrs' => ['class' => 'not_visible'],
     ],
    _l('tags'),
-   _l('project_progress'),
-   _l('project_start_date'),
-   _l('project_deadline'),
    _l('project_members'),
-   _l('Roadmap'),
-   _l('project_status'),
 ];
 
 $custom_fields = get_custom_fields('projects', ['show_on_table' => 1]);

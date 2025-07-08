@@ -9,7 +9,7 @@ return App_table::find('projects')
         $hasPermissionEdit   = staff_can('edit',  'projects');
         $hasPermissionDelete = staff_can('delete',  'projects');
         $hasPermissionCreate = staff_can('create',  'projects');
-
+        
         $aColumns = [
             db_prefix() . 'projects.id as id',
             'name',
@@ -18,7 +18,6 @@ return App_table::find('projects')
             'start_date',
             'deadline',
             '(SELECT GROUP_CONCAT(CONCAT(firstname, \' \', lastname) SEPARATOR ",") FROM ' . db_prefix() . 'project_members JOIN ' . db_prefix() . 'staff on ' . db_prefix() . 'staff.staffid = ' . db_prefix() . 'project_members.staff_id WHERE project_id=' . db_prefix() . 'projects.id ORDER BY staff_id) as members',
-            'status',
         ];
 
 
@@ -100,23 +99,9 @@ return App_table::find('projects')
 
             $row[] = render_tags($aRow['tags']);
 
-            ob_start();
-            $percent = $this->ci->projects_model->calc_progress($aRow['id']);
-            $progress_bar_percent = $percent / 100; ?>
-            <input type="hidden" value="<?php
-            echo '' . $progress_bar_percent; ?>" name="percent">
-            <div class="goal-progress" data-reverse="true">
-               <strong class="goal-percent pr-goal-percent"><?php
-                echo '' . $percent; ?>%</strong>
-            </div>
-            <?php
-            $progress = ob_get_contents();
-            ob_end_clean();
-            $row[] = $progress;
+        
 
-            $row[] = e(_d($aRow['start_date']));
 
-            $row[] = e(_d($aRow['deadline']));
 
             $membersOutput = '<div class=" -tw-space-x-1">';
             $members       = explode(',', $aRow['members']);
@@ -141,11 +126,8 @@ return App_table::find('projects')
             $membersOutput .= '</div>';
             $row[] = $membersOutput;
 
-            $options = icon_btn('project_roadmap/view_project_roadmap/' . $aRow['id'], 'fa fa-eye', 'btn-default', $data_title);
-            $row[] =  $options;
 
-            $status = get_project_status_by_id($aRow['status']);
-            $row[]  = '<span class="label project-status-' . $aRow['status'] . '" style="color:' . $status['color'] . ';border:1px solid ' . adjust_hex_brightness($status['color'], 0.4) . ';background: ' . adjust_hex_brightness($status['color'], 0.04) . ';">' . e($status['name']) . '</span>';
+            
 
             // Custom fields add values
             foreach ($customFieldsColumns as $customFieldColumn) {

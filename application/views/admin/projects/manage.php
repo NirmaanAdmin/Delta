@@ -21,7 +21,7 @@
                             <app-filters
                                 id="<?php echo $table->id(); ?>"
                                 view="<?php echo $table->viewName(); ?>"
-                                :rules="extra.projectsRules || <?php echo app\services\utilities\Js::from($this->input->get('status') ? $table->findRule('status')->setValue([(int) $this->input->get('status')]) : []); ?>"
+                                :rules="extra.projectsRules || <?php echo app\services\utilities\Js::from($this->input->get('name') ? $table->findRule('name')->setValue([(int) $this->input->get('name')]) : []); ?>"
                                 :saved-filters="<?php echo $table->filtersJs(); ?>"
                                 :available-rules="<?php echo $table->rulesJs(); ?>">
                             </app-filters>
@@ -31,7 +31,7 @@
 
                     <div class="panel_s tw-mt-2 sm:tw-mt-4">
                         <div class="panel-body">
-                            <div class="row mbot15">
+                            <!-- <div class="row mbot15">
                                 <div class="col-md-12">
                                     <h4 class="tw-mt-0 tw-font-semibold tw-text-lg tw-flex tw-items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -70,8 +70,8 @@
                                     </div>
                                     <?php } ?>
                                 </div>
-                            </div>
-                            <hr class="hr-panel-separator" />
+                            </div> -->
+                            <!-- <hr class="hr-panel-separator" /> -->
                             <div class="panel-table-full">
                                 <?php echo form_hidden('custom_view'); ?>
                                 <?php $this->load->view('admin/projects/table_html'); ?>
@@ -87,24 +87,24 @@
 <?php init_tail(); ?>
 <script>
 $(function() {
-    initDataTable('.table-projects', admin_url + 'projects/table', [8,9], [8,9], {},
-        <?php echo hooks()->apply_filters('projects_table_default_order', json_encode([5, 'asc'])); ?>);
+    initDataTable('.table-projects', admin_url + 'projects/table', [3,4], [3,4], {},
+        <?php echo hooks()->apply_filters('projects_table_default_order', json_encode([1, 'asc'])); ?>);
 
-    $('.table-projects').DataTable().on('draw', function() {
-        var rows = $('.table-projects').find('tr');
-        $.each(rows, function() {
-            var td = $(this).find('td').eq(4);
-            var percent = $(td).find('input[name="percent"]').val();
-            $(td).find('.goal-progress').circleProgress({
-                value: percent,
-                size: 45,
-                animation: false,
-                fill: {
-                    gradient: ["#28b8da", "#059DC1"]
-                }
-            })
-        })
-    })
+    // $('.table-projects').DataTable().on('draw', function() {
+    //     var rows = $('.table-projects').find('tr');
+    //     $.each(rows, function() {
+    //         var td = $(this).find('td').eq(4);
+    //         var percent = $(td).find('input[name="percent"]').val();
+    //         $(td).find('.goal-progress').circleProgress({
+    //             value: percent,
+    //             size: 45,
+    //             animation: false,
+    //             fill: {
+    //                 gradient: ["#28b8da", "#059DC1"]
+    //             }
+    //         })
+    //     })
+    // })
 
     init_ajax_search('customer', '#clientid_copy_project.ajax-search');
 });
