@@ -19840,7 +19840,7 @@ class Purchase_model extends App_Model
             $html .= '
                 <td style="width: 14%">' . $row['item_scope'] . '</td>
                 <td style="width: 10%">' . $row['quantity'] .' ' . $row['unit_name'] .'</td>
-                <td style="width: 10%">₹ ' . $row['rate'] . '</td>
+                <td style="width: 10%">₹ ' . app_format_money($row['rate'],'') . '</td>
                 <td style="width: 22%">' . $row['owners_company'] . '</td>
                 <td style="width: 14%">' . $order_status_labels[$row['order_status']]['text'] . '</td>
             </tr>';
