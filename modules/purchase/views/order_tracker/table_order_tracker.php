@@ -3,14 +3,9 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 $module_name = 'order_tracker';
-$type_filter_name = 'order_tracker_type';
-$rli_filter_name = 'rli_filter';
 $vendors_filter_name = 'vendors';
-$kind_filter_name = 'order_tracker_kind';
-$budget_head_filter_name = 'budget_head';
-$order_type_filter_name = 'order_type_filter';
-$project_filter_name = 'projects';
-$aw_unw_order_status_filter_name = 'aw_unw_order_status';
+$project_filter_name = 'projects_new';
+$order_status_filter_name = 'order_tracker_status';
 
 // Define columns for the table
 $aColumns = [
@@ -53,6 +48,30 @@ if (isset($vendors)) {
         array_push($where, $where_vendors);
     }
 }
+
+if ($this->ci->input->post('order_tracker_status') && count($this->ci->input->post('order_tracker_status')) > 0) {
+    array_push($where, 'AND '.db_prefix() . 'pur_order_tracker.status IN (' . implode(',', $this->ci->input->post('order_tracker_status')) . ')');
+}
+
+if ($this->ci->input->post('projects_new')
+    && count($this->ci->input->post('projects_new')) > 0) {
+    array_push($where, 'AND '.db_prefix() . 'pur_order_tracker.owners_company IN (' . implode(',', $this->ci->input->post('projects_new')) . ')');
+}
+
+if ($this->ci->input->post('vendors')
+    && count($this->ci->input->post('vendors')) > 0) {
+    array_push($where, 'AND '.db_prefix() . 'pur_order_tracker.comapny IN (' . implode(',', $this->ci->input->post('vendors')) . ')');
+}
+
+$project_filter_name_value = !empty($this->ci->input->post('projects_new')) ? implode(',', $this->ci->input->post('projects_new')) : NULL;
+update_module_filter($module_name, $project_filter_name, $project_filter_name_value);
+
+
+$status_filter_name_value = !empty($this->ci->input->post('order_tracker_status')) ? implode(',', $this->ci->input->post('order_tracker_status')) : NULL;
+update_module_filter($module_name, $order_status_filter_name, $status_filter_name_value);
+
+$vendor_filter_name_value = !empty($this->ci->input->post('vendors')) ? implode(',', $this->ci->input->post('vendors')) : NULL;
+update_module_filter($module_name, $vendors_filter_name, $vendor_filter_name_value);
 
 $having = '';
 

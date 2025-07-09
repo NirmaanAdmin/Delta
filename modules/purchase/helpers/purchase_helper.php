@@ -3608,7 +3608,7 @@ function get_projects_list($name_project, $project)
     if (!is_array($selected)) {
         $selected = explode(",", $selected);
     }
-    return render_select($name_project, $get_project, array('id', 'name'), '', $selected, array(), array(), '', '', true);
+    return render_select($name_project, $get_project, ['id', 'name'], '', $selected, [], [], '', '', true);
 }
 function get_sub_head_list($name_sub_head, $sub_head)
 {

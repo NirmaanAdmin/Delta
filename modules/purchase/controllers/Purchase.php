@@ -12257,22 +12257,17 @@ class purchase extends AdminController
     public function get_order_tracker_row_template()
     {
         $name = $this->input->post('name');
-        $order_scope = $this->input->post('order_scope');
-        $vendor = $this->input->post('vendor');
         $order_date = $this->input->post('order_date');
-        $completion_date = $this->input->post('completion_date');
-        $budget_ro_projection = $this->input->post('budget_ro_projection');
-        $committed_contract_amount = $this->input->post('committed_contract_amount');
-        $change_order_amount = $this->input->post('change_order_amount');
-        $anticipate_variation = $this->input->post('anticipate_variation');
-        $final_certified_amount = $this->input->post('final_certified_amount');
-        $project = $this->input->post('project');
-        $kind = $this->input->post('kind');
-        $group_pur = $this->input->post('group_pur');
-        $remarks = $this->input->post('remarks');
-        $order_value = $this->input->post('order_value');
+        $comapny_name = $this->input->post('comapny_name');
+        $item_scope = $this->input->post('item_scope');
+        $quantity = $this->input->post('quantity');
+        $unit = $this->input->post('unit');
+        $rate = $this->input->post('rate');
+        $owners_company = $this->input->post('owners_company');
+        $item_key = $this->input->post('item_key');
 
-        echo $this->purchase_model->create_order_tracker_row_template($name, $order_scope, $vendor, $order_date, $completion_date, $budget_ro_projection, $committed_contract_amount, $change_order_amount, $anticipate_variation, $final_certified_amount, $kind, $group_pur, $remarks, $order_value, $project);
+        echo $this->purchase_model->create_order_tracker_row_template($name, $order_date, $comapny_name, $item_scope, $quantity, $rate, $owners_company, $item_key ,$unit);
+        
     }
 
     public function update_billing_remarks()
@@ -13320,7 +13315,7 @@ class purchase extends AdminController
     public function order_tracker_pdf()
     {
         $order_tracker = $this->purchase_model->get_order_tracker_pdf_html();
-        
+
         try {
             $pdf = $this->purchase_model->order_tracker_pdf($order_tracker);
             $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -13376,23 +13371,23 @@ class purchase extends AdminController
                 $order_date = date('d M, Y', strtotime($row['order_date']));
             }
 
-             $order_status_labels = [
+            $order_status_labels = [
                 1 => ['label' => 'info', 'table' => 'bill_dispatched', 'text' => _l('Bill Dispatched')],
                 2 => ['label' => 'success', 'table' => 'delivered', 'text' => _l('Delivered')],
                 3 => ['label' => 'warning', 'table' => 'order_received', 'text' => _l('Order Received')],
                 4 => ['label' => 'danger', 'table' => 'rejected', 'text' => _l('Rejected')],
             ];
-            
+
             // Write row data
             fputcsv($output, [
                 $order_date,
                 $row['company_name'] ?? '',
                 $row['item_scope'] ?? '',
-                $row['quantity'] .' ' . $row['unit_name'],
+                $row['quantity'] . ' ' . $row['unit_name'],
                 app_format_money($row['rate'] ?? 0, ''),
                 $row['owners_company'] ?? '',
                 $order_status_labels[$row['order_status']]['text'] ?? '',
-                
+
             ]);
         }
 

@@ -6,14 +6,9 @@ var expenseDropzone;
     table_rec_campaign = $('.table-table_order_tracker');
 
     var Params = {
-        "type": "[name='type[]']",
-        "rli_filter": "[name='rli_filter']",
+        "projects_new": "[name='projects_new[]']",
         "vendors": "[name='vendors[]']",
-        "kind": "[name='kind']",
-        "budget_head": "[name='budget_head']",
-        "order_type_filter": "[name='order_type_filter']",
-        "projects": "[name='projects[]']",
-        "aw_unw_order_status": "[name='aw_unw_order_status[]']"
+        "order_tracker_status": "[name='order_tracker_status[]']"
     };
 
     initDataTable('.table-table_order_tracker', admin_url + 'purchase/table_order_tracker', [], [], Params, [1, 'desc']);
@@ -27,35 +22,17 @@ var expenseDropzone;
         });
     });
 
-    $(document).on('change', 'select[name="type[]"]', function () {
-        $('select[name="type[]"]').selectpicker('refresh');
-    });
-
     $(document).on('change', 'select[name="vendors[]"]', function () {
         $('select[name="vendors[]"]').selectpicker('refresh');
     });
-    $(document).on('change', 'select[name="projects[]"]', function () {
-        $('select[name="projects[]"]').selectpicker('refresh');
+    $(document).on('change', 'select[name="projects_new[]"]', function () {
+        $('select[name="projects_new[]"]').selectpicker('refresh');
     });
-    $(document).on('change', 'select[name="aw_unw_order_status[]"]', function () {
-        $('select[name="aw_unw_order_status[]"]').selectpicker('refresh');
-    });
-
-    $(document).on('change', 'select[name="rli_filter"]', function () {
-        $('select[name="rli_filter"]').selectpicker('refresh');
+    $(document).on('change', 'select[name="order_tracker_status[]"]', function () {
+        $('select[name="order_tracker_status[]"]').selectpicker('refresh');
     });
 
-    $(document).on('change', 'select[name="kind"]', function () {
-        $('select[name="kind"]').selectpicker('refresh');
-    });
-
-    $(document).on('change', 'select[name="budget_head"]', function () {
-        $('select[name="budget_head"]').selectpicker('refresh');
-    });
-
-    $(document).on('change', 'select[name="order_type_filter"]', function () {
-        $('select[name="order_type_filter"]').selectpicker('refresh');
-    });
+  
 
     $(document).on('click', '.reset_all_ot_filters', function () {
         var filterArea = $('.all_ot_filters');

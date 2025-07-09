@@ -412,7 +412,7 @@
         var item_key = lastAddedItemKey ? lastAddedItemKey += 1 : $("body").find('.order-tracker-items-table tbody .item').length + 1;
         lastAddedItemKey = item_key;
         // $("body").append('<div class="dt-loader"></div>');
-        order_get_item_row_template('newitems[' + item_key + ']', data.order_scope, data.vendor, data.order_date, data.completion_date, data.budget_ro_projection, data.committed_contract_amount, data.change_order_amount, data.anticipate_variation, data.final_certified_amount, data.kind, data.project, data.group_pur, data.remarks, data.order_value).done(function(output) {
+        order_get_item_row_template('newitems[' + item_key + ']', data.order_date, data.comapny_name, data.item_scope, data.quantity, data.unit, data.rate, data.owners_company,item_key).done(function(output) {
             table_row += output;
 
             $('.invoice-item table.order-tracker-items-table.items tbody').append(table_row);
@@ -434,20 +434,13 @@
         "use strict";
 
         var response = {};
-        response.order_scope = $('.invoice-item .main textarea[name="order_scope"]').val();
-        response.vendor = $('.invoice-item .main select[name="vendor"]').val();
         response.order_date = $('.invoice-item .main input[name="order_date"]').val();
-        response.completion_date = $('.invoice-item .main input[name="completion_date"]').val();
-        response.budget_ro_projection = $('.invoice-item .main input[name="budget_ro_projection"]').val();
-        response.order_value = $('.invoice-item .main input[name="order_value"]').val();
-        response.committed_contract_amount = $('.invoice-item .main input[name="committed_contract_amount"]').val();
-        response.change_order_amount = $('.invoice-item .main input[name="change_order_amount"]').val();
-        response.anticipate_variation = $('.invoice-item .main input[name="anticipate_variation"]').val();
-        response.final_certified_amount = $('.invoice-item .main input[name="final_certified_amount"]').val();
-        response.project = $('.invoice-item .main select[name="project"]').val();
-        response.kind = $('.invoice-item .main select[name="kind"]').val();
-        response.group_pur = $('.invoice-item .main select[name="group_pur"]').val();
-        response.remarks = $('.invoice-item .main textarea[name="remarks"]').val();
+        response.comapny_name = $('.invoice-item .main select[name="company_name"]').val();
+        response.item_scope = $('.invoice-item .main input[name="item_scope"]').val();
+        response.quantity = $('.invoice-item .main input[name="quantity"]').val();
+        response.unit = $('.invoice-item .main select[name="unit"]').val();
+        response.rate = $('.invoice-item .main input[name="rate"]').val();
+        response.owners_company = $('.invoice-item .main select[name="owners_company"]').val();
 
         return response;
     }
@@ -462,7 +455,7 @@
         previewArea.find('select').val('').selectpicker('refresh');
     }
 
-    function order_get_item_row_template(name, order_scope, vendor, order_date, completion_date, budget_ro_projection, committed_contract_amount, change_order_amount, anticipate_variation, final_certified_amount, kind, project, group_pur, remarks, order_value) {
+    function order_get_item_row_template(name, order_date, comapny_name, item_scope, quantity, unit, rate, owners_company,item_key) {
         "use strict";
 
         jQuery.ajaxSetup({
@@ -471,20 +464,14 @@
 
         var d = $.post(admin_url + 'purchase/get_order_tracker_row_template', {
             name: name,
-            order_scope: order_scope,
-            vendor: vendor,
             order_date: order_date,
-            completion_date: completion_date,
-            budget_ro_projection: budget_ro_projection,
-            committed_contract_amount: committed_contract_amount,
-            change_order_amount: change_order_amount,
-            anticipate_variation: anticipate_variation,
-            final_certified_amount: final_certified_amount,
-            project: project,
-            kind: kind,
-            group_pur: group_pur,
-            remarks: remarks,
-            order_value: order_value
+            comapny_name: comapny_name,
+            item_scope: item_scope,
+            quantity: quantity,
+            unit: unit,
+            rate: rate,
+            owners_company: owners_company,
+            item_key : item_key
         });
         jQuery.ajaxSetup({
             async: true
@@ -512,15 +499,25 @@
             var isValid = true;
             $(".table.items tbody tr").each(function(index) {
                 if (index === 0) return; // Skip the first element
-                var scopeVal = $(this)
-                    .find("textarea[name='order_scope'], textarea[name$='[order_scope]']")
+                var orderdateVal = $(this)
+                    .find("input[name='order_date'], input[name$='[order_date]']")
                     .val();
-                console.log(scopeVal);
-                if (!scopeVal) {
-                    alert_float("danger", "Order Scope is required in row " + (index + 1) + "!");
+                var comapnyVal = $(this)
+                            .find("select[name='company_name'], select[name$='[company_name]']")
+                            .val();
+                if (!orderdateVal) {
+                    alert_float("danger", "Order Date is required in row " + (index + 1) + "!");
                     isValid = false;
                     return false; // break out of .each
                 }
+
+                if(!comapnyVal){
+                    alert_float("danger", "Company Name is required in row " + (index + 1) + "!");
+                    isValid = false;
+                    return false; // break out of .each
+                }
+
+
             });
 
             if (!isValid) return;

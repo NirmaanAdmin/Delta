@@ -17746,33 +17746,38 @@ class Purchase_model extends App_Model
         $this->db->update('tblpur_invoices', array('bil_total' => $total));
         return true;
     }
-    public function create_order_tracker_row_template($name = '', $order_date = '', $comapny_name = '', $item_scope = '', $quantity = '', $rate = '', $owners_company = '', $item_key = '')
+    public function create_order_tracker_row_template($name = '', $order_date = '', $comapny_name = '', $item_scope = '', $quantity = '', $rate = '', $owners_company = '', $item_key = '',$unit_name = '')
     {
         $row = '';
         $name_order_date = 'order_date';
-        $name_comapny_name = 'comapny_name';
+        $name_comapny_name = 'company_name';
         $name_item_scope = 'item_scope';
         $name_quantity = 'quantity';
         $name_rate = 'rate';
         $name_owners_company = 'owners_company';
+        $name_unit_name = 'unit';
 
         if ($name == '') {
             $row .= '<tr class="main">';
         } else {
             $row .= '<tr class="sortable item">';
             $name_order_date = $name . '[order_date]';
-            $name_comapny_name = $name . '[comapny_name]';
+            $name_comapny_name = $name . '[company_name]';
             $name_item_scope = $name . '[item_scope]';
             $name_quantity = $name . '[quantity]';
             $name_rate = $name . '[rate]';
             $name_owners_company = $name . '[owners_company]';
+            $name_unit_name = $name . '[unit]';
         }
+
+        $units_list = $this->get_units();
+
 
         $row .= '<td class="">' .  $item_key . '</td>';
         $row .= '<td class="">' .  render_input($name_order_date, '', $order_date, 'date') . '</td>';
         $row .= '<td class="">' .  get_vemdor_list($name_comapny_name, $comapny_name) . '</td>';
         $row .= '<td class="">' .  render_input($name_item_scope, '', $item_scope) . '</td>';
-        $row .= '<td class="">' .  render_input($name_quantity, '', $quantity, 'number') . '</td>';
+        $row .= '<td class="">' .  render_input($name_quantity, '', $quantity, 'number') . render_select($name_unit_name, $units_list, ['id', 'label'], '', $unit_name, ['id']) . '</td>';
         $row .= '<td class="">' .  render_input($name_rate, '', $rate, 'number') . '</td>';
         $row .= '<td class="">' .  get_projects_list($name_owners_company, $owners_company) . '</td>';
         $add_class = '';
@@ -17846,44 +17851,32 @@ class Purchase_model extends App_Model
 
     public function add_order_tracker($data)
     {
-        unset($data['order_scope']);
-        unset($data['vendor']);
+        
         unset($data['order_date']);
-        unset($data['completion_date']);
-        unset($data['budget_ro_projection']);
-        unset($data['committed_contract_amount']);
-        unset($data['change_order_amount']);
-        unset($data['anticipate_variation']);
-        unset($data['final_certified_amount']);
-        unset($data['project']);
-        unset($data['kind']);
-        unset($data['group_pur']);
-        unset($data['remarks']);
-        unset($data['order_value']);
+        unset($data['company_name']);
+        unset($data['item_scope']);
+        unset($data['quantity']);
+        unset($data['unit']);
+        unset($data['rate']);
+        unset($data['owners_company']);
         $order_detail = [];
         if (isset($data['newitems'])) {
             $order_detail = $data['newitems'];
             unset($data['newitems']);
         }
+
         $last_insert_id = [];
         if (count($order_detail) > 0) {
             foreach ($order_detail as $key => $rqd) {
                 $dt_data = [];
 
-                $dt_data['pur_order_name'] = $rqd['order_scope'];
-                $dt_data['vendor'] = $rqd['vendor'];
                 $dt_data['order_date'] = $rqd['order_date'];
-                $dt_data['completion_date'] = $rqd['completion_date'];
-                $dt_data['budget'] = $rqd['budget_ro_projection'];
-                $dt_data['total'] = $rqd['committed_contract_amount'];
-                $dt_data['co_total'] = $rqd['change_order_amount'];
-                $dt_data['anticipate_variation'] = $rqd['anticipate_variation'];
-                $dt_data['final_certified_amount'] = $rqd['final_certified_amount'];
-                $dt_data['kind'] = $rqd['kind'];
-                $dt_data['group_pur'] = $rqd['group_pur'];
-                $dt_data['remarks'] = $rqd['remarks'];
-                $dt_data['order_value'] = $rqd['order_value'];
-                $dt_data['project'] = $rqd['project'];
+                $dt_data['comapny'] = $rqd['company_name'];
+                $dt_data['item_scope'] = $rqd['item_scope'];
+                $dt_data['quantity'] = $rqd['quantity'];
+                $dt_data['unit'] = $rqd['unit'];
+                $dt_data['rate'] = $rqd['rate'];
+                $dt_data['owners_company'] = $rqd['owners_company'];
 
                 $this->db->insert(db_prefix() . 'pur_order_tracker', $dt_data);
                 $last_insert_id[] = $this->db->insert_id();

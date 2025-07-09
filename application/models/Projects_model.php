@@ -277,8 +277,8 @@ class Projects_model extends App_Model
             return null;
         }
 
-        $this->db->select('*,' . get_sql_select_client_company());
-        $this->db->join(db_prefix() . 'clients', db_prefix() . 'clients.userid=' . db_prefix() . 'projects.clientid');
+        $this->db->select('*,');
+        // $this->db->join(db_prefix() . 'clients', db_prefix() . 'clients.userid=' . db_prefix() . 'projects.clientid');
         $this->db->order_by('id', 'desc');
 
         return $this->db->get(db_prefix() . 'projects')->result_array();

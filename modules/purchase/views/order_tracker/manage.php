@@ -86,120 +86,44 @@
 
                      <div class="all_ot_filters">
 
-                        <div class="col-md-2 form-group">
-                           <?php
-                           // Fetch saved filter; ensure we end up with an array
-                           $order_tracker_type_filter = get_module_filter($module_name, 'order_tracker_type');
-                           if (!empty($order_tracker_type_filter) && $order_tracker_type_filter->filter_value !== '') {
-                              $selected_types = explode(',', $order_tracker_type_filter->filter_value);
-                           } else {
-                              $selected_types = [];
-                           }
-                           ?>
-                           <select
-                              name="type[]"
-                              id="order_tracker_type"
-                              class="selectpicker"
-                              multiple
-                              data-live-search="true"
-                              data-width="100%"
-                              data-none-selected-text="<?php echo _l('type'); ?>">
-                              <option value="pur_orders" <?php echo in_array('pur_orders', $selected_types) ? 'selected' : ''; ?>>
-                                 <?php echo _l('pur_order'); ?>
-                              </option>
-                              <option value="wo_orders" <?php echo in_array('wo_orders', $selected_types) ? 'selected' : ''; ?>>
-                                 <?php echo _l('wo_order'); ?>
-                              </option>
-                           </select>
-                        </div>
+                        
 
 
-                        <div class="col-md-3 form-group">
-                           <?php
-                           $rli_filter = get_module_filter($module_name, 'rli_filter');
-                           $rli_filter_val = !empty($rli_filter) ? $rli_filter->filter_value : '';
-                           ?>
-                           <select name="rli_filter" class="selectpicker" data-width="100%" data-none-selected-text="<?php echo _l('rli_filter'); ?>" data-actions-box="true">
-                              <option value=""></option>
-                              <option value="None">None</option>
-                              <?php foreach ($rli_filters as $rli) { ?>
-                                 <option value="<?php echo $rli['id']; ?>" <?php echo ($rli_filter_val == $rli['id']) ? 'selected' : ''; ?>><?php echo $rli['name']; ?></option>
-                              <?php } ?>
-                           </select>
-                        </div>
-
+                        
                         <div class="col-md-2">
                            <?php
                            $vendors_filter = get_module_filter($module_name, 'vendors');
                            $vendors_filter_val = !empty($vendors_filter) ? explode(",", $vendors_filter->filter_value) : '';
-                           echo render_select('vendors[]', $vendors, array('userid', 'company'), '', $vendors_filter_val, array('data-width' => '100%', 'data-none-selected-text' => _l('contractor'), 'multiple' => true, 'data-actions-box' => true), array(), 'no-mbot', '', false);
+                           echo render_select('vendors[]', $vendors, array('userid', 'company'), '', $vendors_filter_val, array('data-width' => '100%', 'data-none-selected-text' => _l('Companies'), 'multiple' => true, 'data-actions-box' => true), array(), 'no-mbot', '', false);
                            ?>
-                        </div>
-
-                        <div class="col-md-2 form-group">
-                           <?php
-                           $order_tracker_kind_filter = get_module_filter($module_name, 'order_tracker_kind');
-                           $order_tracker_kind_filter_val = !empty($order_tracker_kind_filter) ? $order_tracker_kind_filter->filter_value : '';
-                           ?>
-                           <select name="kind" id="kind" class="selectpicker" data-live-search="true" data-width="100%" data-none-selected-text="<?php echo _l('cat'); ?>">
-                              <option value=""></option>
-                              <option value="Client Supply" <?php echo ($order_tracker_kind_filter_val == "Client Supply") ? 'selected' : ''; ?>><?php echo _l('client_supply'); ?></option>
-                              <option value="Bought out items" <?php echo ($order_tracker_kind_filter_val == "Bought out items") ? 'selected' : ''; ?>><?php echo _l('bought_out_items'); ?></option>
-                           </select>
-                        </div>
-
-                        <div class="col-md-2 form-group" style="padding-left: 0px;">
-                           <?php
-                           $budget_head_filter = get_module_filter($module_name, 'budget_head');
-                           $budget_head_filter_val = !empty($budget_head_filter) ? $budget_head_filter->filter_value : '';
-                           ?>
-                           <select name="budget_head" class="selectpicker" data-width="100%" data-none-selected-text="<?php echo _l('group_pur'); ?>" data-actions-box="true">
-                              <option value=""></option>
-                              <option value="None">None</option>
-                              <?php foreach ($budget_head as $head) { ?>
-                                 <option value="<?php echo $head['id']; ?>" <?php echo ($budget_head_filter_val == $head['id']) ? 'selected' : ''; ?>><?php echo $head['name']; ?></option>
-                              <?php } ?>
-                           </select>
-                        </div>
-                        <?php
-                        $order_type_filter_filter = get_module_filter($module_name, 'order_type_filter');
-                        $order_type_filter_val = !empty($order_type_filter_filter) ? $order_type_filter_filter->filter_value : '';
-                        ?>
-                        <div class="col-md-2 form-group" style="padding-left: 0px;">
-                           <select name="order_type_filter" class="selectpicker" data-width="100%" data-none-selected-text="<?php echo _l('Order Type'); ?>" data-actions-box="true">
-                              <option value=""></option>
-                              <option value="None">None</option>
-                              <option value="fetched" <?php echo ($order_type_filter_val == "fetched") ? 'selected' : ''; ?>>Fetched</option>
-                              <option value="created" <?php echo ($order_type_filter_val == "created") ? 'selected' : ''; ?>>Created</option>
-
-                           </select>
                         </div>
 
                         <div class="col-md-2">
                            <?php
-                           $projects_filter = get_module_filter($module_name, 'projects');
+                           $projects_filter = get_module_filter($module_name, 'projects_new');
                            if (!empty($projects_filter) && $projects_filter->filter_value != '') {
                               $projects_filter_val = !empty($projects_filter) ? explode(",", $projects_filter->filter_value) : '';
                            } else {
                               $projects_filter_val = explode(",", 1);
                            }
 
-                           echo render_select('projects[]', $projects, array('id', 'name'), '', $projects_filter_val, array('data-width' => '100%', 'data-none-selected-text' => _l('project'), 'multiple' => true, 'data-actions-box' => true), array(), 'no-mbot', '', false);
+                           echo render_select('projects_new[]', $projects, array('id', 'name'), '', $projects_filter_val, array('data-width' => '100%', 'data-none-selected-text' => _l('project'), 'multiple' => true, 'data-actions-box' => true), array(), 'no-mbot', '', false);
                            ?>
                         </div>
 
                         <div class="col-md-2 form-group">
 
                            <?php
-                           $aw_unw_order_status_type_filter = get_module_filter($module_name, 'aw_unw_order_status');
+                           $aw_unw_order_status_type_filter = get_module_filter($module_name, 'order_tracker_status');
                            $aw_unw_order_status_type_filter_val = !empty($aw_unw_order_status_type_filter) ? explode(",", $aw_unw_order_status_type_filter->filter_value) : [];
                            $order_status = [
-                              0 => ['id' => '1', 'name' => _l('Awarded')],
-                              1 => ['id' => '2', 'name' => _l('Unawarded')],
-                              2 => ['id' => '3', 'name' => _l('Awarded by RIL')],
+                              1 => ['id' => '1', 'name' => _l('Bill Dispatched')],
+                              2 => ['id' => '2', 'name' => _l('Delivered')],
+                              3 => ['id' => '3', 'name' => _l('Order Received')],
+                              4 => ['id' => '4', 'name' => _l('Rejected')],
                            ];
 
-                           echo render_select('aw_unw_order_status[]', $order_status, array('id', 'name'), '', $aw_unw_order_status_type_filter_val, array('data-width' => '100%', 'data-none-selected-text' => _l('Order Status'), 'multiple' => true, 'data-actions-box' => true), array(), 'no-mbot', '', false); ?>
+                           echo render_select('order_tracker_status[]', $order_status, array('id', 'name'), '', $aw_unw_order_status_type_filter_val, array('data-width' => '100%', 'data-none-selected-text' => _l('Order Status'), 'multiple' => true, 'data-actions-box' => true), array(), 'no-mbot', '', false); ?>
                         </div>
 
                         <div class="col-md-1 form-group">
@@ -234,7 +158,7 @@
                            $columns = [
                               _l('Sr.No'),
                               _l('order_date'),
-                              _l('Comapany Name'),
+                              _l('Companies'),
                               _l('Item Scope'),
                               _l('Quantity'),
                               _l('Rate'),
@@ -271,7 +195,7 @@
                               <tr>
                                  <th><?php echo _l('Sr.No'); ?></th>
                                  <th><?php echo _l('order_date'); ?></th>
-                                 <th><?php echo _l('Comapany Name'); ?></th>
+                                 <th><?php echo _l('Companies'); ?></th>
                                  <th><?php echo _l('Item Scope'); ?></th>
                                  <th><?php echo _l('Quantity'); ?></th>
                                  <th><?php echo _l('Rate'); ?></th>
