@@ -13353,23 +13353,13 @@ class purchase extends AdminController
         $get_order_tracker = $this->purchase_model->get_order_tracker_pdf();
         // CSV Headers (same as PDF table columns)
         $headers = [
-            'Order Status',
-            'Order Scope',
-            'Contractor',
             'Order Date',
-            'Completion Date',
-            'Budget RO Projection',
-            'Committed Contract Amount',
-            'Change Order Amount',
-            'Total Rev Contract Value',
-            'Anticipate Variation',
-            'Cost to Complete',
-            'Final Certified Amount',
-            'Project',
-            'RLI Filter',
-            'Category',
-            'Group Pur',
-            'Remarks'
+            'Comapany Name',
+            'Item Scope',
+            'Quantity',
+            'Rate',
+            'Owner Company',
+            'Status',
         ];
 
         // Write headers to CSV
@@ -13379,63 +13369,30 @@ class purchase extends AdminController
         $serial_no = 1;
         foreach ($get_order_tracker as $row) {
             // Format dates (same logic as PDF)
-            $completion_date = $aw_unw_order_status = $contract_amount = $order_name = '';
-            if (!empty($row['completion_date']) && $row['completion_date'] != '0000-00-00') {
-                $completion_date = date('d M, Y', strtotime($row['completion_date']));
-            }
+
 
             $order_date = '';
             if (!empty($row['order_date']) && $row['order_date'] != '0000-00-00') {
                 $order_date = date('d M, Y', strtotime($row['order_date']));
             }
-            if (!empty($row['aw_unw_order_status'])) {
-                if ($row['aw_unw_order_status'] == 1) {
-                    $aw_unw_order_status = _l('Awarded');
-                } elseif ($row['aw_unw_order_status'] == 2) {
-                    $aw_unw_order_status = _l('Unawarded');
-                } elseif ($row['aw_unw_order_status'] == 3) {
-                    $aw_unw_order_status = _l('Awarded by RIL');
-                }
-            }
-            $status_labels = [
-                0 => ['label' => 'danger', 'table' => 'provided_by_ril', 'text' => _l('provided_by_ril')],
-                1 => ['label' => 'success', 'table' => 'new_item_service_been_addded_as_per_instruction', 'text' => _l('new_item_service_been_addded_as_per_instruction')],
-                2 => ['label' => 'info', 'table' => 'due_to_spec_change_then_original_cost', 'text' => _l('due_to_spec_change_then_original_cost')],
-                3 => ['label' => 'warning', 'table' => 'deal_slip', 'text' => _l('deal_slip')],
-                4 => ['label' => 'primary', 'table' => 'to_be_provided_by_ril_but_managed_by_bil', 'text' => _l('to_be_provided_by_ril_but_managed_by_bil')],
-                5 => ['label' => 'secondary', 'table' => 'due_to_additional_item_as_per_apex_instrution', 'text' => _l('due_to_additional_item_as_per_apex_instrution')],
-                6 => ['label' => 'purple', 'table' => 'event_expense', 'text' => _l('event_expense')],
-                7 => ['label' => 'teal', 'table' => 'pending_procurements', 'text' => _l('pending_procurements')],
-                8 => ['label' => 'orange', 'table' => 'common_services_in_ghj_scope', 'text' => _l('common_services_in_ghj_scope')],
-                9 => ['label' => 'green', 'table' => 'common_services_in_ril_scope', 'text' => _l('common_services_in_ril_scope')],
-                10 => ['label' => 'default', 'table' => 'due_to_site_specfic_constraint', 'text' => _l('due_to_site_specfic_constraint')],
+
+             $order_status_labels = [
+                1 => ['label' => 'info', 'table' => 'bill_dispatched', 'text' => _l('Bill Dispatched')],
+                2 => ['label' => 'success', 'table' => 'delivered', 'text' => _l('Delivered')],
+                3 => ['label' => 'warning', 'table' => 'order_received', 'text' => _l('Order Received')],
+                4 => ['label' => 'danger', 'table' => 'rejected', 'text' => _l('Rejected')],
             ];
-            if ($row['source_table'] == "order_tracker") {
-                $contract_amount =  app_format_money($row['total'] ?? 0, '');
-                $order_name = $row['order_name'] ?? '';
-            } else {
-                $contract_amount = app_format_money($row['subtotal'] ?? 0, '');
-                $order_name = $row['order_number'] . '-' . $row['order_name'] ?? '';
-            }
+            
             // Write row data
             fputcsv($output, [
-                $aw_unw_order_status,
-                $order_name,
-                $row['vendor'] ?? '',
                 $order_date,
-                $completion_date,
-                app_format_money($row['budget'] ?? 0, ''),
-                $contract_amount,
-                app_format_money($row['co_total'] ?? 0, ''),
-                app_format_money($row['total_rev_contract_value'] ?? 0, ''),
-                app_format_money($row['anticipate_variation'] ?? 0, ''),
-                app_format_money($row['cost_to_complete'] ?? 0, ''),
-                app_format_money($row['final_certified_amount'] ?? 0, ''),
-                $row['project'] ?? '',
-                $status_labels[$row['rli_filter']]['text'] ?? '',
-                $row['kind'] ?? '',
-                get_group_name_by_id($row['group_pur']) ?? '',
-                $row['remarks'] ?? ''
+                $row['company_name'] ?? '',
+                $row['item_scope'] ?? '',
+                $row['quantity'] .' ' . $row['unit_name'],
+                app_format_money($row['rate'] ?? 0, ''),
+                $row['owners_company'] ?? '',
+                $order_status_labels[$row['order_status']]['text'] ?? '',
+                
             ]);
         }
 
