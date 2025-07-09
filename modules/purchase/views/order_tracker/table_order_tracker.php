@@ -105,21 +105,46 @@ foreach ($rResult as $aRow) {
     $row[] = $aRow['owners_comapny_name'];
     
     // Status
-    $status_badge = '';
-    switch ($aRow['order_status']) {
-        case 1:
-            $status_badge = '<span class="label label-warning">' . _l('Bill Dispatched') . '</span>';
-            break;
-        case 2:
-            $status_badge = '<span class="label label-success">' . _l('Delivered') . '</span>';
-            break;
-        case 3:
-            $status_badge = '<span class="label label-info">' . _l('Order Received') . '</span>';
-            break;
-        case 4:
-            $status_badge = '<span class="label label-danger">' . _l('Rejected'). '</span>';
-    }
-    $row[] = $status_badge;
+     $order_status_labels = [
+            1 => ['label' => 'info', 'table' => 'bill_dispatched', 'text' => _l('Bill Dispatched')],
+            2 => ['label' => 'success', 'table' => 'delivered', 'text' => _l('Delivered')],
+            3 => ['label' => 'warning', 'table' => 'order_received', 'text' => _l('Order Received')],
+            4 => ['label' => 'danger', 'table' => 'rejected', 'text' => _l('Rejected')],
+         ];
+         // Start generating the HTML
+         $oreder_status = '';
+         if (isset($order_status_labels[$aRow['order_status']])) {
+            $status = $order_status_labels[$aRow['order_status']];
+            $oreder_status = '<span class="inline-block label label-' . $status['label'] . '" id="status_aw_uw_span_' . $aRow['id'] . '" task-status-table="' . $status['table'] . '">' . $status['text'];
+         } else {
+            $oreder_status = '<span class="inline-block label " id="status_aw_uw_span_' . $aRow['id'] . '" >';
+         }
+
+         if (has_permission('order_tracker', '', 'edit') || is_admin()) {
+            $oreder_status .= '<div class="dropdown inline-block mleft5 table-export-exclude">';
+            $oreder_status .= '<a href="#" class="dropdown-toggle text-dark" id="tablePurOderStatus-' . $aRow['id'] . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            $oreder_status .= '<span data-toggle="tooltip" title="' . _l('ticket_single_change_status') . '"><i class="fa fa-caret-down" aria-hidden="true"></i></span>';
+            $oreder_status .= '</a>';
+
+            $oreder_status .= '<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="tablePurOderStatus-' . $aRow['id'] . '">';
+
+            foreach ($order_status_labels as $key => $status) {
+               if ($key != $aRow['order_status']) {
+                  $oreder_status .= '<li>
+                       <a href="javascript:void(0);" onclick="change_order_status(' . $key . ', ' . $aRow['id'] . '); return false;">
+                           ' . $status['text'] . '
+                       </a>
+                   </li>';
+               }
+            }
+
+
+            $oreder_status .= '</ul>';
+            $oreder_status .= '</div>';
+         }
+
+         $oreder_status .= '</span>';
+         $row[] = $oreder_status;
     
     $output['aaData'][] = $row;
     $sr++;

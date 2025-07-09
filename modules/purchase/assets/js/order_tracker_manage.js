@@ -165,10 +165,10 @@ function change_rli_filter(status, id, table_name) {
     }
 }
 
-function change_aw_unw_order_status(status, id, table_name) {
+function change_order_status(status, id) {
     "use strict";
     if (id > 0) {
-        $.post(admin_url + 'purchase/change_aw_unw_order_status/' + status + '/' + id + '/' + table_name)
+        $.post(admin_url + 'purchase/change_order_status/' + status + '/' + id)
             .done(function (response) {
                 try {
                     response = JSON.parse(response);

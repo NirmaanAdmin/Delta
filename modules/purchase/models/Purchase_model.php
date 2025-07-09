@@ -11807,7 +11807,7 @@ class Purchase_model extends App_Model
             $name_tax_value = $name . '[tax_value]';
 
 
-            $array_qty_attr = ['onblur' => 'pur_calculate_total();', 'onchange' => 'pur_calculate_total();', 'min' => '0.0', 'step' => 'any',  'data-quantity' => (float)$quantity,'readonly' => true];
+            $array_qty_attr = ['onblur' => 'pur_calculate_total();', 'onchange' => 'pur_calculate_total();', 'min' => '0.0', 'step' => 'any',  'data-quantity' => (float)$quantity, 'readonly' => true];
 
 
             $array_rate_attr = ['onblur' => 'pur_calculate_total();', 'onchange' => 'pur_calculate_total();', 'min' => '0.0', 'step' => 'any', 'data-amount' => 'invoice', 'placeholder' => _l('rate')];
@@ -17746,7 +17746,7 @@ class Purchase_model extends App_Model
         $this->db->update('tblpur_invoices', array('bil_total' => $total));
         return true;
     }
-    public function create_order_tracker_row_template($name = '', $order_date = '', $comapny_name = '', $item_scope = '', $quantity= '', $rate = '', $owners_company = '',$item_key = '')
+    public function create_order_tracker_row_template($name = '', $order_date = '', $comapny_name = '', $item_scope = '', $quantity = '', $rate = '', $owners_company = '', $item_key = '')
     {
         $row = '';
         $name_order_date = 'order_date';
@@ -19798,40 +19798,25 @@ class Purchase_model extends App_Model
     public function get_order_tracker_pdf_html()
     {
         $get_order_tracker = $this->get_order_tracker_pdf();
-
+  
         $html = '';
         $html .=  '<table class="table purorder-item" style="width: 100%">
         <thead>
           <tr>
             <th class="thead-dark" align="left" style="width: 3%" >' . _l('#') . '</th>
-            <th class="thead-dark" align="left" style="width: 4%">' . _l('order_status') . '</th>
-            <th class="thead-dark" align="left" style="width: 10.2%">' . _l('order_scope') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('contractor') . '</th>
-            <th class="thead-dark" align="left" style="width: 4.6%">' . _l('order_date') . '</th>
-            <th class="thead-dark" align="left" style="width: 4.6%">' . _l('completion_date') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('budget_ro_projection') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('committed_contract_amount') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('change_order_amount') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('total_rev_contract_value') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('anticipate_variation') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('cost_to_complete') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('final_certified_amount') . '</th>
-            <th class="thead-dark" align="left" style="width: 4.6%">' . _l('project') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('rli_filter') . '</th>
-            <th class="thead-dark" align="left" style="width: 3.6%">' . _l('category') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('group_pur') . '</th>
-            <th class="thead-dark" align="left" style="width: 10.2%">' . _l('remarks') . '</th>
-            
+            <th class="thead-dark" align="left" style="width: 4%">' . _l('order_date') . '</th>
+            <th class="thead-dark" align="left" style="width: 10.2%">' . _l('Comapany Name') . '</th>
+            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('Item Scope') . '</th>
+            <th class="thead-dark" align="left" style="width: 4.6%">' . _l('Quantity') . '</th>
+            <th class="thead-dark" align="left" style="width: 4.6%">' . _l('Rate') . '</th>
+            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('Owner Company') . '</th>
+            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('Status') . '</th>            
           </tr>
           </thead>
           <tbody>';
         $serial_no = 1;
         foreach ($get_order_tracker as $row) {
-            // Handle completion_date - fixed logic and validation
-            $completion_date = $aw_unw_order_status = '';
-            if (!empty($row['completion_date']) && $row['completion_date'] != '0000-00-00') {
-                $completion_date = date('d M, Y', strtotime($row['completion_date']));
-            }
+
 
             // Handle order_date
             $order_date = '';
@@ -19839,56 +19824,25 @@ class Purchase_model extends App_Model
                 $order_date = date('d M, Y', strtotime($row['order_date']));
             }
 
-            if (!empty($row['aw_unw_order_status'])) {
-                if ($row['aw_unw_order_status'] == 1) {
-                    $aw_unw_order_status = _l('Awarded');
-                } elseif ($row['aw_unw_order_status'] == 2) {
-                    $aw_unw_order_status = _l('Unawarded');
-                } elseif ($row['aw_unw_order_status'] == 3) {
-                    $aw_unw_order_status = _l('Awarded by RIL');
-                }
-            }
-            $status_labels = [
-                0 => ['label' => 'danger', 'table' => 'provided_by_ril', 'text' => _l('provided_by_ril')],
-                1 => ['label' => 'success', 'table' => 'new_item_service_been_addded_as_per_instruction', 'text' => _l('new_item_service_been_addded_as_per_instruction')],
-                2 => ['label' => 'info', 'table' => 'due_to_spec_change_then_original_cost', 'text' => _l('due_to_spec_change_then_original_cost')],
-                3 => ['label' => 'warning', 'table' => 'deal_slip', 'text' => _l('deal_slip')],
-                4 => ['label' => 'primary', 'table' => 'to_be_provided_by_ril_but_managed_by_bil', 'text' => _l('to_be_provided_by_ril_but_managed_by_bil')],
-                5 => ['label' => 'secondary', 'table' => 'due_to_additional_item_as_per_apex_instrution', 'text' => _l('due_to_additional_item_as_per_apex_instrution')],
-                6 => ['label' => 'purple', 'table' => 'event_expense', 'text' => _l('event_expense')],
-                7 => ['label' => 'teal', 'table' => 'pending_procurements', 'text' => _l('pending_procurements')],
-                8 => ['label' => 'orange', 'table' => 'common_services_in_ghj_scope', 'text' => _l('common_services_in_ghj_scope')],
-                9 => ['label' => 'green', 'table' => 'common_services_in_ril_scope', 'text' => _l('common_services_in_ril_scope')],
-                10 => ['label' => 'default', 'table' => 'due_to_site_specfic_constraint', 'text' => _l('due_to_site_specfic_constraint')],
+            $order_status_labels = [
+                1 => ['label' => 'info', 'table' => 'bill_dispatched', 'text' => _l('Bill Dispatched')],
+                2 => ['label' => 'success', 'table' => 'delivered', 'text' => _l('Delivered')],
+                3 => ['label' => 'warning', 'table' => 'order_received', 'text' => _l('Order Received')],
+                4 => ['label' => 'danger', 'table' => 'rejected', 'text' => _l('Rejected')],
             ];
             $html .= '<tr>
-                <td style="width: 3%">' . $serial_no . '</td>
-                <td style="width: 4%">' . $aw_unw_order_status . '</td>';
-            if ($row['source_table'] == "order_tracker") {
-                $html .= '<td style="width: 10.2%">' . $row['order_name'] . '</td>';
-            } else {
-                $html .= '<td style="width: 10.2%">' . $row['order_number'] . '-' . $row['order_name'] . '</td>';
-            }
+                <td style="width: 3%">' . $serial_no . '</td>';
 
-            $html .= '<td style="width: 5.6%">' . $row['vendor'] . '</td>
+            $html .= '
                 <td style="width: 4.6%">' . $order_date . '</td>
-                <td style="width: 4.6%">' . $completion_date . '</td>
-                <td style="width: 5.6%">' . app_format_money($row['budget'], '₹') . '</td>';
-            if ($row['source_table'] == "order_tracker") {
-                $html .= '<td style="width: 5.6%">' . app_format_money($row['total'], '₹') . '</td>';
-            } else {
-                $html .= '<td style="width: 5.6%">' . app_format_money($row['subtotal'], '₹') . '</td>';
-            }
-            $html .= '<td style="width: 5.6%">' . app_format_money($row['co_total'], '₹') . '</td>
-                <td style="width: 5.6%">' . app_format_money($row['total_rev_contract_value'], '₹') . '</td>
-                <td style="width: 5.6%">' . app_format_money($row['anticipate_variation'], '₹') . '</td>
-                <td style="width: 5.6%">' . app_format_money($row['cost_to_complete'], '₹') . '</td>
-                <td style="width: 5.6%">' . app_format_money($row['final_certified_amount'], '₹') . '</td>
-                <td style="width: 4.6%">' . $row['project'] . '</td>
-                <td style="width: 5.6%">' . $status_labels[$row['rli_filter']]['text'] . '</td>
-                <td style="width: 3.6%">' . $row['kind'] . '</td>
-                <td style="width: 5.6%">' . get_group_name_by_id($row['group_pur']) . '</td>
-                <td style="width: 10.2%">' . $row['remarks'] . '</td>
+                <td style="width: 4.6%">' . $row['company_name'] . '</td>';
+          
+            $html .= '
+                <td style="width: 4.6%">' . $row['item_scope'] . '</td>
+                <td style="width: 4.6%">' . $row['quantity'] . $row['unit_name'] .'</td>
+                <td style="width: 4.6%">' . $row['rate'] . '</td>
+                <td style="width: 4.6%">' . $row['owners_company'] . '</td>
+                <td style="width: 5.6%">' . $order_status_labels[$row['status']]['text'] . '</td>
             </tr>';
             $serial_no++;
         }
@@ -20042,179 +19996,92 @@ class Purchase_model extends App_Model
     }
     public function get_order_tracker_pdf()
     {
-        // 1) Build the base UNION ALL query
+
+        // Build the base query for order_tracker only
         $baseSql = "
-        SELECT DISTINCT
-            po.id,
-            po.aw_unw_order_status AS aw_unw_order_status,
-            po.pur_order_number     AS order_number,
-            po.pur_order_name       AS order_name,
-            po.rli_filter,
-            po.group_pur            AS group_pur,
-            pv.company              AS vendor,
-            pv.userid               AS vendor_id,
-            po.order_date,
-            po.completion_date,
-            po.budget,
-            po.order_value,
-            po.total                AS total,
-            co.co_value             AS co_total,
-            (po.subtotal + IFNULL(co.co_value, 0)) AS total_rev_contract_value, 
-            po.anticipate_variation,
-            (IFNULL(po.anticipate_variation,0) + (po.subtotal + IFNULL(co.co_value,0))) AS cost_to_complete,
-            COALESCE(inv_po_sum.final_certified_amount,0) AS final_certified_amount,
-            po.kind,
-            po.remarks              AS remarks,
-            po.subtotal             AS subtotal,
-            pr.name                 AS project,
-            pr.id                   AS project_id,
-            'pur_orders'            AS source_table
-        FROM tblpur_orders po
-        LEFT JOIN tblpur_vendor pv   ON pv.userid = po.vendor
-        LEFT JOIN tblco_orders co    ON co.po_order_id = po.id
-        LEFT JOIN tblprojects pr     ON pr.id = po.project
-        LEFT JOIN (
-            SELECT pur_order, SUM(final_certified_amount) AS final_certified_amount
-            FROM tblpur_invoices
-            WHERE pur_order IS NOT NULL
-            GROUP BY pur_order
-        ) AS inv_po_sum ON inv_po_sum.pur_order = po.id
+            SELECT 
+                t.order_date as order_date,
+                pv.company AS company_name,
+                t.item_scope,
+                t.quantity,
+                t.rate,
+                pr.name AS owners_company,
+                t.status AS order_status,
+                wut.unit_code AS unit_name
+            FROM " . db_prefix() . "pur_order_tracker t
+            LEFT JOIN " . db_prefix() . "pur_vendor pv ON pv.userid = t.comapny
+            LEFT JOIN " . db_prefix() . "projects pr ON pr.id = t.owners_company
+            LEFT JOIN " . db_prefix() . "ware_unit_type wut ON wut.unit_type_id = t.unit
+            ";
 
-        UNION ALL
-
-        SELECT DISTINCT
-            wo.id,
-            wo.aw_unw_order_status AS aw_unw_order_status,
-            wo.wo_order_number     AS order_number,
-            wo.wo_order_name       AS order_name,
-            wo.rli_filter,
-            wo.group_pur           AS group_pur,
-            pv.company             AS vendor,
-            pv.userid              AS vendor_id,
-            wo.order_date,
-            wo.completion_date,
-            wo.budget,
-            wo.order_value,
-            wo.total               AS total,
-            co.co_value            AS co_total,
-            (wo.subtotal + IFNULL(co.co_value, 0)) AS total_rev_contract_value,
-            wo.anticipate_variation,
-            (IFNULL(wo.anticipate_variation,0) + (wo.subtotal + IFNULL(co.co_value,0))) AS cost_to_complete,
-            COALESCE(inv_wo_sum.final_certified_amount,0) AS final_certified_amount,
-            wo.kind,
-            wo.remarks             AS remarks,
-            wo.subtotal            AS subtotal,
-            pr.name                AS project,
-            pr.id                  AS project_id,
-            'wo_orders'            AS source_table
-        FROM tblwo_orders wo
-        LEFT JOIN tblpur_vendor pv   ON pv.userid = wo.vendor
-        LEFT JOIN tblco_orders co    ON co.wo_order_id = wo.id
-        LEFT JOIN tblprojects pr     ON pr.id = wo.project
-        LEFT JOIN (
-            SELECT wo_order, SUM(final_certified_amount) AS final_certified_amount
-            FROM tblpur_invoices
-            WHERE wo_order IS NOT NULL
-            GROUP BY wo_order
-        ) AS inv_wo_sum ON inv_wo_sum.wo_order = wo.id
-
-        UNION ALL
-
-        SELECT DISTINCT
-            t.id,
-            t.aw_unw_order_status  AS aw_unw_order_status,
-            t.pur_order_number     AS order_number,
-            t.pur_order_name       AS order_name,
-            t.rli_filter,
-            t.group_pur            AS group_pur,
-            pv.company             AS vendor,
-            pv.userid              AS vendor_id,
-            t.order_date,
-            t.completion_date,
-            t.budget,
-            t.order_value,
-            t.total                AS total,
-            t.co_total             AS co_total,
-            (t.total + IFNULL(t.co_total, 0)) AS total_rev_contract_value,
-            t.anticipate_variation,
-            (IFNULL(t.anticipate_variation,0) + (t.total + IFNULL(t.co_total,0))) AS cost_to_complete,
-            t.final_certified_amount                AS final_certified_amount,
-            t.kind,
-            t.remarks             AS remarks,
-            t.subtotal            AS subtotal,
-            pr.name                AS project,
-            pr.id                  AS project_id,
-            'order_tracker'       AS source_table
-        FROM tblpur_order_tracker t
-        LEFT JOIN tblpur_vendor pv   ON pv.userid = t.vendor
-        LEFT JOIN tblprojects pr     ON pr.id = t.project
-        ";
-
-        // 2) Load any user‑saved filters
+        // Load any user-saved filters
         $CI = &get_instance();
-        $filters = $CI->db
-            ->select('*')
-            ->from(db_prefix() . 'module_filter')
-            ->where('module_name', 'order_tracker')
-            ->where('staff_id', get_staff_user_id())
-            ->get()
-            ->result_array();
-        // 3) Build WHERE clauses
-        $whereClauses = [];
-        foreach ($filters as $f) {
-            $name  = $f['filter_name'];
-            $value = trim($f['filter_value']);
-            if ($value === '') {
-                continue;
-            }
-            $val = $CI->db->escape_str($value);
-            switch ($name) {
-                case 'order_type_filter':
-                    if ($val === 'created') {
-                        // only records newly created in your tracker
-                        $whereClauses[] = "source_table = 'order_tracker'";
-                    } elseif ($val === 'fetched') {
-                        // records fetched from either work orders or purchase orders
-                        $whereClauses[] = "(source_table = 'wo_orders' OR source_table = 'pur_orders')";
-                    }
-                    break;
+        // $filters = $CI->db
+        //     ->select('*')
+        //     ->from(db_prefix() . 'module_filter')
+        //     ->where('module_name', 'order_tracker')
+        //     ->where('staff_id', get_staff_user_id())
+        //     ->get()
+        //     ->result_array();
 
-                case 'aw_unw_order_status':
-                    $whereClauses[] = "aw_unw_order_status = '{$val}'";
-                    break;
-                case 'vendors':
-                    $whereClauses[] = "vendor_id = '{$val}'";
-                    break;
-                case 'rli_filter':
-                    $whereClauses[] = "rli_filter = '{$val}'";
-                    break;
-                case 'order_tracker_kind':
-                    $whereClauses[] = "kind = '{$val}'";
-                    break;
-                case 'budget_head':
-                    $whereClauses[] = "group_pur = '{$val}'";
-                    break;
-                case 'projects':
-                    $whereClauses[] = "project_id = '{$val}'";
-                    break;
-                case 'order_tracker_type':
-                    $whereClauses[] = "source_table = '{$val}'";
-                    break;
-            }
-        }
-        // 4) If there are filters, wrap the base query and apply them
+        // Build WHERE clauses
+        $whereClauses = [];
+        // foreach ($filters as $f) {
+        //     $name  = $f['filter_name'];
+        //     $value = trim($f['filter_value']);
+        //     if ($value === '') {
+        //         continue;
+        //     }
+        //     $val = $CI->db->escape_str($value);
+
+        //     switch ($name) {
+        //         case 'order_type_filter':
+        //             // Only show order_tracker records
+        //             $whereClauses[] = "source_table = 'order_tracker'";
+        //             break;
+        //         case 'aw_unw_order_status':
+        //             $whereClauses[] = "aw_unw_order_status = '{$val}'";
+        //             break;
+        //         case 'vendors':
+        //             $whereClauses[] = "comapny = '{$val}'";
+        //             break;
+        //         case 'rli_filter':
+        //             $whereClauses[] = "rli_filter = '{$val}'";
+        //             break;
+        //         case 'order_tracker_kind':
+        //             $whereClauses[] = "kind = '{$val}'";
+        //             break;
+        //         case 'budget_head':
+        //             $whereClauses[] = "group_pur = '{$val}'";
+        //             break;
+        //         case 'projects':
+        //             $whereClauses[] = "owners_company = '{$val}'";
+        //             break;
+        //         case 'order_tracker_type':
+        //             $whereClauses[] = "source_table = '{$val}'";
+        //             break;
+        //     }
+        // }
+
+        // // Add status filter if needed (from your table view)
+        // $status = $this->ci->input->post('status');
+        // if (!empty($status)) {
+        //     $whereClauses[] = "t.status = '{$status}'";
+        // }
+
+        // If there are filters, wrap the base query and apply them
         if (!empty($whereClauses)) {
             $sql = "
-            SELECT *
-            FROM (
-                {$baseSql}
-            ) AS combined_results
-            WHERE " . implode(' AND ', $whereClauses);
+        SELECT *
+        FROM (
+            {$baseSql}
+        ) AS filtered_results
+        WHERE " . implode(' AND ', $whereClauses);
         } else {
             $sql = $baseSql;
         }
 
-        // 5) Execute and return
+        // Execute and return
         return $CI->db->query($sql)->result_array();
     }
     public function order_tracker_pdf($order_tracker)
@@ -21702,18 +21569,18 @@ class Purchase_model extends App_Model
 
 
     public function update_bulk_pur_invoices($data)
-    {       
+    {
         if (empty($data)) {
             return false;
-        }else{
-            $invoice_date = to_sql_date($data['date']);           
-            $dt_data =[
+        } else {
+            $invoice_date = to_sql_date($data['date']);
+            $dt_data = [
                 'invoice_date' => $invoice_date,
                 'description_services' => $data['expense_name'],
             ];
             $this->db->where('id', $data['vbt_id']);
-            $this->db->update(db_prefix() . 'pur_invoices',$dt_data);
-            
+            $this->db->update(db_prefix() . 'pur_invoices', $dt_data);
+
             if ($this->db->affected_rows() > 0) {
                 return true;
             } else {
@@ -22049,9 +21916,10 @@ class Purchase_model extends App_Model
 
         $response['total_purchase_orders'] = $response['total_work_orders'] = $response['total_certified_value'] = $response['approved_payment_certificates'] = 0;
         $response['bar_top_vendor_name'] = $response['bar_top_vendor_value'] = array();
-        $response['line_order_date'] = $response['line_order_total'] = array(); 
+        $response['line_order_date'] = $response['line_order_total'] = array();
 
-        $this->db->select('
+        $this->db->select(
+            '
             ' . db_prefix() . 'payment_certificate.id,
             ' . db_prefix() . 'payment_certificate.po_id,
             ' . db_prefix() . 'payment_certificate.wo_id,
@@ -22116,7 +21984,7 @@ class Purchase_model extends App_Model
             $line_order_total = array();
             foreach ($payment_certificate as $key => $value) {
                 $payment_certificate_calc = $this->get_payment_certificate_calc($value['id']);
-                if($value['approve_status'] == 2) {
+                if ($value['approve_status'] == 2) {
                     $amount_rec_4 = !empty($payment_certificate_calc['amount_rec_4']) ? $payment_certificate_calc['amount_rec_4'] : 0;
                     $total_certified_value = $total_certified_value + $amount_rec_4;
 
@@ -22218,12 +22086,16 @@ class Purchase_model extends App_Model
                 return $carry + (float)$item['final_certified_amount'];
             }, 0);
             $response['total_certified_amount'] = app_format_money($total_certified_amount, $base_currency->symbol);
-            $response['total_bills_not_tag_to_orders'] = count(array_filter($pur_invoices, fn($item) =>
+            $response['total_bills_not_tag_to_orders'] = count(array_filter(
+                $pur_invoices,
+                fn($item) =>
                 empty($item['pur_order']) &&
-                empty($item['wo_order']) &&
-                empty($item['order_tracker_id'])
+                    empty($item['wo_order']) &&
+                    empty($item['order_tracker_id'])
             ));
-            $response['total_uninvoice_bills'] = count(array_filter($pur_invoices, fn($item) =>
+            $response['total_uninvoice_bills'] = count(array_filter(
+                $pur_invoices,
+                fn($item) =>
                 empty($item['ril_invoice_id'])
             ));
             $total_pending_amount_to_be_invoice = array_sum(array_column(array_filter($pur_invoices, fn($item) => empty($item['ril_invoice_id'])), 'final_certified_amount'));
@@ -22319,5 +22191,12 @@ class Purchase_model extends App_Model
 
         return $custom_date_select;
     }
-       
+
+
+    public function change_order_status($status, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(db_prefix() . 'pur_order_tracker', ['status' => $status]);
+        return true;
+    }
 }

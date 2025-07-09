@@ -12413,21 +12413,19 @@ class purchase extends AdminController
                         if ($id) {
                             if ($select_invoice == "create_invoice") {
                                 $this->purchase_model->mark_converted_pur_invoice($pur_invoice, $id);
-                                $invoiceid = $this->expenses_model->convert_to_invoice($id); 
+                                $invoiceid = $this->expenses_model->convert_to_invoice($id);
                                 set_alert('success', _l('vendor_bills_converted_to_ril_invoices'));
                             } elseif ($select_invoice == "applied_invoice") {
                                 $this->purchase_model->mark_converted_pur_invoice($pur_invoice, $id);
                                 $applied = array();
                                 $applied['invoice_id'] = $applied_to_invoice;
                                 $applied['expense_id'] = $id;
-                                $invoiceid = $this->expenses_model->applied_to_invoice($applied); 
+                                $invoiceid = $this->expenses_model->applied_to_invoice($applied);
                                 set_alert('success', _l('vendor_bills_converted_to_ril_invoices'));
                             }
                         }
                     }
                 }
-
-                
             }
             if ($bulk_active_tab == 'bulk_assign') {
                 if (!empty($neworderitems)) {
@@ -13322,7 +13320,7 @@ class purchase extends AdminController
     public function order_tracker_pdf()
     {
         $order_tracker = $this->purchase_model->get_order_tracker_pdf_html();
-
+        
         try {
             $pdf = $this->purchase_model->order_tracker_pdf($order_tracker);
             $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -14973,5 +14971,53 @@ class purchase extends AdminController
         $result = $this->purchase_model->get_vbt_dashboard($data);
         echo json_encode($result);
         die;
+    }
+
+    public function change_order_status($status, $id)
+    {
+        // Define an array of statuses with their corresponding labels and texts
+        $order_status_labels = [
+            1 => ['label' => 'label-info', 'table' => 'bill_dispatched', 'text' => _l('Bill Dispatched')],
+            2 => ['label' => 'label-success', 'table' => 'delivered', 'text' => _l('Delivered')],
+            3 => ['label' => 'label-warning', 'table' => 'order_received', 'text' => _l('Order Received')],
+            4 => ['label' => 'label-danger', 'table' => 'rejected', 'text' => _l('Rejected')],
+        ];
+        $success = $this->purchase_model->change_order_status($status, $id);
+        $message = $success ? _l('change_order_status_successfully') : _l('changeaw_order_status_fail');
+
+        $html = '';
+        $status_str = $order_status_labels[$status]['text'] ?? '';
+        $class = $order_status_labels[$status]['label'] ?? '';
+
+        if (has_permission('order_tracker', '', 'edit') || is_admin()) {
+            $html .= '<div class="dropdown inline-block mleft5 table-export-exclude">';
+            $html .= '<a href="#" class="dropdown-toggle text-dark" id="tablePurOderStatus-' . $id . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            $html .= '<span data-toggle="tooltip" title="' . _l('ticket_single_change_status') . '"><i class="fa fa-caret-down" aria-hidden="true"></i></span>';
+            $html .= '</a>';
+
+            $html .= '<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="tablePurOderStatus-' . $id . '">';
+
+            // Generate the dropdown menu options dynamically
+            foreach ($order_status_labels as $key => $label) {
+                if ($key != $status) {
+                    $html .= '<li>
+                    <a href="#" onclick="change_order_status(' . $key . ', ' . $id . '); return false;">
+                        ' . $label['text'] . '
+                    </a>
+                </li>';
+                }
+            }
+
+            $html .= '</ul>';
+            $html .= '</div>';
+        }
+
+        echo json_encode([
+            'success' => $success,
+            'status_str' => $status_str,
+            'class' => $class,
+            'mess' => $message,
+            'html' => $html,
+        ]);
     }
 }

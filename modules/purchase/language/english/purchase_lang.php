@@ -953,3 +953,5 @@ $lang['bill_deleted_successfully'] = 'Bill deleted successfully';
 $lang['bill_deletion_failed'] = 'Bill deletion failed';
 $lang['shop_drawings_upload'] = 'Shop Drawings Upload';
 $lang['shop_drawings_download'] = 'Shop Drawings Download';
+$lang['change_order_status_successfully'] = 'Order status changed successfully';
+$lang['changeaw_order_status_fail'] = 'Failed to change order status';
