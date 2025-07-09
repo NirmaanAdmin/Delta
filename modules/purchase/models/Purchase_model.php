@@ -3079,7 +3079,7 @@ class Purchase_model extends App_Model
         $this->db->where('id', $id);
         $this->db->update(db_prefix() . 'pur_orders', $data);
         $this->save_purchase_files('pur_order', $id);
-        $this->update_cost_control_remarks($cost_control_remarks, $insert_id);
+        // $this->update_cost_control_remarks($cost_control_remarks, $insert_id);
 
         if ($this->db->affected_rows() > 0) {
             $affectedRows++;
