@@ -13329,7 +13329,7 @@ class purchase extends AdminController
             die;
         }
 
-        $type = 'I';
+        $type = 'D';
 
         if ($this->input->get('output_type')) {
             $type = $this->input->get('output_type');
