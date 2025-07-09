@@ -19804,13 +19804,13 @@ class Purchase_model extends App_Model
         <thead>
           <tr>
             <th class="thead-dark" align="left" style="width: 3%" >' . _l('#') . '</th>
-            <th class="thead-dark" align="left" style="width: 4%">' . _l('order_date') . '</th>
-            <th class="thead-dark" align="left" style="width: 10.2%">' . _l('Comapany Name') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('Item Scope') . '</th>
-            <th class="thead-dark" align="left" style="width: 4.6%">' . _l('Quantity') . '</th>
-            <th class="thead-dark" align="left" style="width: 4.6%">' . _l('Rate') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('Owner Company') . '</th>
-            <th class="thead-dark" align="left" style="width: 5.6%">' . _l('Status') . '</th>            
+            <th class="thead-dark" align="left" style="width: 14%">' . _l('order_date') . '</th>
+            <th class="thead-dark" align="left" style="width: 14%">' . _l('Comapany Name') . '</th>
+            <th class="thead-dark" align="left" style="width: 14%">' . _l('Item Scope') . '</th>
+            <th class="thead-dark" align="left" style="width: 10%">' . _l('Quantity') . '</th>
+            <th class="thead-dark" align="left" style="width: 10%">' . _l('Rate') . '</th>
+            <th class="thead-dark" align="left" style="width: 22%">' . _l('Owner Company') . '</th>
+            <th class="thead-dark" align="left" style="width: 14%">' . _l('Status') . '</th>            
           </tr>
           </thead>
           <tbody>';
@@ -19834,15 +19834,15 @@ class Purchase_model extends App_Model
                 <td style="width: 3%">' . $serial_no . '</td>';
 
             $html .= '
-                <td style="width: 4.6%">' . $order_date . '</td>
-                <td style="width: 4.6%">' . $row['company_name'] . '</td>';
+                <td style="width: 14%">' . $order_date . '</td>
+                <td style="width: 14%">' . $row['company_name'] . '</td>';
           
             $html .= '
-                <td style="width: 4.6%">' . $row['item_scope'] . '</td>
-                <td style="width: 4.6%">' . $row['quantity'] . $row['unit_name'] .'</td>
-                <td style="width: 4.6%">' . $row['rate'] . '</td>
-                <td style="width: 4.6%">' . $row['owners_company'] . '</td>
-                <td style="width: 5.6%">' . $order_status_labels[$row['status']]['text'] . '</td>
+                <td style="width: 14%">' . $row['item_scope'] . '</td>
+                <td style="width: 10%">' . $row['quantity'] .' ' . $row['unit_name'] .'</td>
+                <td style="width: 10%">₹ ' . $row['rate'] . '</td>
+                <td style="width: 22%">' . $row['owners_company'] . '</td>
+                <td style="width: 14%">' . $order_status_labels[$row['order_status']]['text'] . '</td>
             </tr>';
             $serial_no++;
         }
