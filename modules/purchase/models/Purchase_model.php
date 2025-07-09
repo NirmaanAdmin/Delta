@@ -17746,61 +17746,35 @@ class Purchase_model extends App_Model
         $this->db->update('tblpur_invoices', array('bil_total' => $total));
         return true;
     }
-    public function create_order_tracker_row_template($name = '', $order_scope = '', $contractor = '', $order_date = '', $completion_date = '', $budget_ro_projection = '', $committed_contract_amount = '', $change_order_amount = '', $anticipate_variation = '',  $final_certified_amount = '', $category = '', $group_pur = '', $remarks = '', $order_value = '', $project = '')
+    public function create_order_tracker_row_template($name = '', $order_date = '', $comapny_name = '', $item_scope = '', $quantity= '', $rate = '', $owners_company = '',$item_key = '')
     {
         $row = '';
-        $name_order_scope = 'order_scope';
-        $name_vendor = 'vendor';
         $name_order_date = 'order_date';
-        $name_completion_date = 'completion_date';
-        $name_budget_ro_projection = 'budget_ro_projection';
-        $name_committed_contract_amount = 'committed_contract_amount';
-        $name_change_order_amount = 'change_order_amount';
-        $name_anticipate_variation = 'anticipate_variation';
-        $name_final_certified_amount = 'final_certified_amount';
-        $name_kind = 'kind';
-        $name_group_pur = 'group_pur';
-        $name_remarks = 'remarks';
-        $name_order_value = 'order_value';
-        $name_project = 'project';
+        $name_comapny_name = 'comapny_name';
+        $name_item_scope = 'item_scope';
+        $name_quantity = 'quantity';
+        $name_rate = 'rate';
+        $name_owners_company = 'owners_company';
 
         if ($name == '') {
             $row .= '<tr class="main">';
         } else {
             $row .= '<tr class="sortable item">';
-            $name_order_scope = $name . '[order_scope]';
-            $name_vendor = $name . '[vendor]';
             $name_order_date = $name . '[order_date]';
-            $name_completion_date = $name . '[completion_date]';
-            $name_budget_ro_projection = $name . '[budget_ro_projection]';
-            $name_committed_contract_amount = $name . '[committed_contract_amount]';
-            $name_change_order_amount = $name . '[change_order_amount]';
-            $name_anticipate_variation = $name . '[anticipate_variation]';
-            $name_final_certified_amount = $name . '[final_certified_amount]';
-            $name_kind = $name . '[kind]';
-            $name_group_pur = $name . '[group_pur]';
-            $name_remarks = $name . '[remarks]';
-            $name_order_value = $name . '[order_value]';
-            $name_project = $name . '[project]';
+            $name_comapny_name = $name . '[comapny_name]';
+            $name_item_scope = $name . '[item_scope]';
+            $name_quantity = $name . '[quantity]';
+            $name_rate = $name . '[rate]';
+            $name_owners_company = $name . '[owners_company]';
         }
 
-
-        $row .= '<td class="">' . render_textarea($name_order_scope, '', $order_scope, ['rows' => 2, 'placeholder' => _l('order_scope')]) . '</td>';
-        $row .= '<td class="">' .  get_vemdor_list($name_vendor, $contractor) . '</td>';
-
+        $row .= '<td class="">' .  $item_key . '</td>';
         $row .= '<td class="">' .  render_input($name_order_date, '', $order_date, 'date') . '</td>';
-        $row .= '<td class="">' .  render_input($name_completion_date, '', $completion_date, 'date') . '</td>';
-        $row .= '<td class="">' .  render_input($name_budget_ro_projection, '', $budget_ro_projection, 'number') . '</td>';
-        $row .= '<td class="">' .  render_input($name_order_value, '', $order_value, 'number') . '</td>';
-        $row .= '<td class="">' .  render_input($name_committed_contract_amount, '', $committed_contract_amount, 'number') . '</td>';
-        $row .= '<td class="">' .  render_input($name_change_order_amount, '', $change_order_amount, 'number') . '</td>';
-        $row .= '<td class="">' .  render_input($name_anticipate_variation, '', $anticipate_variation, 'number') . '</td>';
-        $row .= '<td class="">' .  render_input($name_final_certified_amount, '', $final_certified_amount, 'number') . '</td>';
-        $row .= '<td class="">' .  get_projects_list($name_project, $project) . '</td>';
-        $row .= '<td class="">' .  get_kind_list($name_kind, $category) . '</td>';
-        $row .= '<td class="">' .  get_budget_head_list($name_group_pur, $group_pur) . '</td>';
-        $row .= '<td class="">' .  render_textarea($name_remarks, '', $remarks, ['rows' => 2, 'placeholder' => _l('remarks')]) . '</td>';
-
+        $row .= '<td class="">' .  get_vemdor_list($name_comapny_name, $comapny_name) . '</td>';
+        $row .= '<td class="">' .  render_input($name_item_scope, '', $item_scope) . '</td>';
+        $row .= '<td class="">' .  render_input($name_quantity, '', $quantity, 'number') . '</td>';
+        $row .= '<td class="">' .  render_input($name_rate, '', $rate, 'number') . '</td>';
+        $row .= '<td class="">' .  get_projects_list($name_owners_company, $owners_company) . '</td>';
         $add_class = '';
         if ($name == '') {
             $row .= '<td><button type="button" onclick="order_add_item_to_table(\'undefined\',\'undefined\'); return false;" class="btn pull-right btn-info"><i class="fa fa-check"></i></button></td>';

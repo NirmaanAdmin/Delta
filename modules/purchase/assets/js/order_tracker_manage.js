@@ -16,7 +16,7 @@ var expenseDropzone;
         "aw_unw_order_status": "[name='aw_unw_order_status[]']"
     };
 
-    initDataTable('.table-table_order_tracker', admin_url + 'purchase/table_order_tracker', [], [], Params, [3, 'desc']);
+    initDataTable('.table-table_order_tracker', admin_url + 'purchase/table_order_tracker', [], [], Params, [1, 'desc']);
 
     $.each(Params, function (i, obj) {
         // console.log(obj);
@@ -101,20 +101,20 @@ var expenseDropzone;
         });
     });
 
-    $('.table-table_order_tracker').on('draw.dt', function () {
-        var reportsTable = $(this).DataTable();
-        var sums = reportsTable.ajax.json().sums;
-        $(this).find('tfoot').addClass('bold');
-        $(this).find('tfoot td').eq(0).html("Total (Per Page)");
-        $(this).find('tfoot td.total_budget_ro_projection').html(sums.total_budget_ro_projection);
-        $(this).find('tfoot td.total_order_value').html(sums.total_order_value);
-        $(this).find('tfoot td.total_committed_contract_amount').html(sums.total_committed_contract_amount);
-        $(this).find('tfoot td.total_change_order_amount').html(sums.total_change_order_amount);
-        $(this).find('tfoot td.total_rev_contract_value').html(sums.total_rev_contract_value);
-        $(this).find('tfoot td.total_anticipate_variation').html(sums.total_anticipate_variation);
-        $(this).find('tfoot td.total_cost_to_complete').html(sums.total_cost_to_complete);
-        $(this).find('tfoot td.total_final_certified_amount').html(sums.total_final_certified_amount);
-    });
+    // $('.table-table_order_tracker').on('draw.dt', function () {
+    //     var reportsTable = $(this).DataTable();
+    //     var sums = reportsTable.ajax.json().sums;
+    //     $(this).find('tfoot').addClass('bold');
+    //     $(this).find('tfoot td').eq(0).html("Total (Per Page)");
+    //     $(this).find('tfoot td.total_budget_ro_projection').html(sums.total_budget_ro_projection);
+    //     $(this).find('tfoot td.total_order_value').html(sums.total_order_value);
+    //     $(this).find('tfoot td.total_committed_contract_amount').html(sums.total_committed_contract_amount);
+    //     $(this).find('tfoot td.total_change_order_amount').html(sums.total_change_order_amount);
+    //     $(this).find('tfoot td.total_rev_contract_value').html(sums.total_rev_contract_value);
+    //     $(this).find('tfoot td.total_anticipate_variation').html(sums.total_anticipate_variation);
+    //     $(this).find('tfoot td.total_cost_to_complete').html(sums.total_cost_to_complete);
+    //     $(this).find('tfoot td.total_final_certified_amount').html(sums.total_final_certified_amount);
+    // });
     $('.buttons-collection').hide()
 })(jQuery);
 

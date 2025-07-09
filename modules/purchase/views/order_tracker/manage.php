@@ -232,26 +232,14 @@
                            <!-- Column Checkboxes -->
                            <?php
                            $columns = [
-                              _l('order_status'),
-                              _l('order_scope'),
-                              _l('contractor'),
+                              _l('Sr.No'),
                               _l('order_date'),
-                              _l('completion_date'),
-                              _l('budget_ro_projection'),
-                              // _l('order_value'),
-                              _l('committed_contract_amount'),
-                              _l('change_order_amount'),
-                              _l('total_rev_contract_value'),
-                              _l('anticipate_variation'),
-                              _l('cost_to_complete'),
-                              _l('final_certified_amount'),
-                              _l('attachment_upload'),
-                              _l('attachment_download'),
-                              _l('project'),
-                              _l('rli_filter'),
-                              _l('category'),
-                              _l('group_pur'),
-                              _l('remarks')
+                              _l('Comapany Name'),
+                              _l('Item Scope'),
+                              _l('Quantity'),
+                              _l('Rate'),
+                              _l('Owner Company'),
+                              _l('Status'),
                            ];
                            ?>
                            <div>
@@ -281,49 +269,18 @@
                         <table class="dt-table-loading table table-table_order_tracker">
                            <thead>
                               <tr>
-                                 <th><?php echo _l('order_status'); ?></th>
-                                 <th><?php echo _l('order_scope'); ?></th>
-                                 <th><?php echo _l('contractor'); ?></th>
+                                 <th><?php echo _l('Sr.No'); ?></th>
                                  <th><?php echo _l('order_date'); ?></th>
-                                 <th><?php echo _l('completion_date'); ?></th>
-                                 <th><?php echo _l('budget_ro_projection'); ?></th>
-                                 <!-- <th><?php echo _l('order_value'); ?></th> -->
-                                 <th><?php echo _l('committed_contract_amount'); ?></th>
-                                 <th><?php echo _l('change_order_amount'); ?></th>
-                                 <th><?php echo _l('total_rev_contract_value'); ?></th>
-                                 <th><?php echo _l('anticipate_variation'); ?></th>
-                                 <th><?php echo _l('cost_to_complete'); ?></th>
-                                 <th><?php echo _l('final_certified_amount'); ?></th>
-                                 <th><?php echo _l('attachment_upload'); ?></th>
-                                 <th><?php echo _l('attachment_download'); ?></th>
-                                 <th><?php echo _l('project'); ?></th>
-                                 <th><?php echo _l('rli_filter'); ?></th>
-                                 <th><?php echo _l('category'); ?></th>
-                                 <th><?php echo _l('group_pur'); ?></th>
-                                 <th><?php echo _l('remarks'); ?></th>
+                                 <th><?php echo _l('Comapany Name'); ?></th>
+                                 <th><?php echo _l('Item Scope'); ?></th>
+                                 <th><?php echo _l('Quantity'); ?></th>
+                                 <th><?php echo _l('Rate'); ?></th>
+                                 <th><?php echo _l('Owner Company'); ?></th>
+                                 <th><?php echo _l('Status'); ?></th>
                               </tr>
                            </thead>
                            <tbody>
                            </tbody>
-                           <tfoot>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td class="total_budget_ro_projection"></td>
-                              <!-- <td class="total_order_value"></td> -->
-                              <td class="total_committed_contract_amount"></td>
-                              <td class="total_change_order_amount"></td>
-                              <td class="total_rev_contract_value"></td>
-                              <td class="total_anticipate_variation"></td>
-                              <td class="total_cost_to_complete"></td>
-                              <td class="total_final_certified_amount"></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                           </tfoot>
                         </table>
                      </div>
 
@@ -340,7 +297,7 @@
          <div class="modal-header">
             <h4 class="modal-title"><?php echo _l('Add New Order'); ?></h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <div class="col-md-8 pull-right">
+            <!-- <div class="col-md-8 pull-right">
                <div class="col-md-2 pull-right">
                   <div id="dowload_file_sample" style="margin-top: 22px;">
                      <label for="file_csv" class="control-label"> </label>
@@ -358,7 +315,7 @@
                   <?php echo form_close(); ?>
                </div>
 
-            </div>
+            </div> -->
             <div class="col-md-12 ">
                <div class="form-group pull-right" id="file_upload_response">
 
@@ -379,21 +336,13 @@
                      <table class="table order-tracker-items-table items table-main-invoice-edit has-calculations no-mtop">
                         <thead>
                            <tr>
-                              <!-- <th align="left"><?php echo _l('serial_no'); ?></th> -->
-                              <th align="left"><?php echo _l('order_scope'); ?></th>
-                              <th align="left"><?php echo _l('contractor'); ?></th>
+                              <th align="left"><?php echo _l('serial_no'); ?></th>
                               <th align="left"><?php echo _l('order_date'); ?></th>
-                              <th align="left"><?php echo _l('completion_date'); ?></th>
-                              <th align="left"><?php echo _l('budget_ro_projection'); ?></th>
-                              <th align="left"><?php echo _l('order_value'); ?></th>
-                              <th align="left"><?php echo _l('committed_contract_amount'); ?></th>
-                              <th align="left"><?php echo _l('change_order_amount'); ?></th>
-                              <th align="left"><?php echo _l('anticipate_variation'); ?></th>
-                              <th align="left"><?php echo _l('final_certified_amount'); ?></th>
-                              <th align="left"><?php echo _l('project'); ?></th>
-                              <th align="left"><?php echo _l('category'); ?></th>
-                              <th align="left"><?php echo _l('group_pur'); ?></th>
-                              <th align="left"><?php echo _l('remarks'); ?></th>
+                              <th align="left"><?php echo _l('Comapany Name'); ?></th>     
+                              <th align="left"><?php echo _l('Item Scope'); ?></th>
+                              <th align="left"><?php echo _l('Quantity'); ?></th>
+                              <th align="left"><?php echo _l('Rate'); ?></th>
+                              <th align="left"><?php echo _l('Owner Company'); ?></th>
                               <th align="center"><i class="fa fa-cog"></i></th>
                            </tr>
                         </thead>
