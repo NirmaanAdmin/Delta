@@ -32,13 +32,11 @@
             e.preventDefault();
 
             var rowId = $(this).data('id');
-            var tableType = $(this).data('type'); // wo_order or pur_order
             var orderDate = $(this).val();
 
             // Perform AJAX request to update the oder date
             $.post(admin_url + 'purchase/update_order_date', {
                 id: rowId,
-                table: tableType,
                 orderDate: orderDate
             }).done(function(response) {
                 response = JSON.parse(response);
@@ -412,7 +410,7 @@
         var item_key = lastAddedItemKey ? lastAddedItemKey += 1 : $("body").find('.order-tracker-items-table tbody .item').length + 1;
         lastAddedItemKey = item_key;
         // $("body").append('<div class="dt-loader"></div>');
-        order_get_item_row_template('newitems[' + item_key + ']', data.order_date, data.comapny_name, data.item_scope, data.quantity, data.unit, data.rate, data.owners_company,item_key).done(function(output) {
+        order_get_item_row_template('newitems[' + item_key + ']', data.order_date, data.comapny_name, data.item_scope, data.quantity, data.unit, data.rate, data.owners_company, item_key).done(function(output) {
             table_row += output;
 
             $('.invoice-item table.order-tracker-items-table.items tbody').append(table_row);
@@ -455,7 +453,7 @@
         previewArea.find('select').val('').selectpicker('refresh');
     }
 
-    function order_get_item_row_template(name, order_date, comapny_name, item_scope, quantity, unit, rate, owners_company,item_key) {
+    function order_get_item_row_template(name, order_date, comapny_name, item_scope, quantity, unit, rate, owners_company, item_key) {
         "use strict";
 
         jQuery.ajaxSetup({
@@ -471,7 +469,7 @@
             unit: unit,
             rate: rate,
             owners_company: owners_company,
-            item_key : item_key
+            item_key: item_key
         });
         jQuery.ajaxSetup({
             async: true
@@ -503,15 +501,15 @@
                     .find("input[name='order_date'], input[name$='[order_date]']")
                     .val();
                 var comapnyVal = $(this)
-                            .find("select[name='company_name'], select[name$='[company_name]']")
-                            .val();
+                    .find("select[name='company_name'], select[name$='[company_name]']")
+                    .val();
                 if (!orderdateVal) {
                     alert_float("danger", "Order Date is required in row " + (index + 1) + "!");
                     isValid = false;
                     return false; // break out of .each
                 }
 
-                if(!comapnyVal){
+                if (!comapnyVal) {
                     alert_float("danger", "Company Name is required in row " + (index + 1) + "!");
                     isValid = false;
                     return false; // break out of .each
@@ -551,28 +549,25 @@
 
     });
 
-    $('body').on('click', '.contract-amount-display', function(e) {
+    $('body').on('click', '.item-scope-display', function(e) {
         e.preventDefault();
 
         var rowId = $(this).data('id');
-        var tableType = $(this).data('type');
-        var currentAmount = $(this).text().replace(/[^\d.-]/g, ''); // Remove currency formatting
+        var currentval = $(this).text(); // Remove currency formatting
 
         // Replace the span with an input field
-        $(this).replaceWith('<input type="number" class="form-control contract-amount-input" value="' + currentAmount + '" data-id="' + rowId + '" data-type="' + tableType + '">');
+        $(this).replaceWith('<input type="text" class="form-control item-scope-input" value="' + currentval + '" data-id="' + rowId + '">');
     });
-    $('body').on('change', '.contract-amount-input', function(e) {
+    $('body').on('change', '.item-scope-input', function(e) {
         e.preventDefault();
 
         var rowId = $(this).data('id');
-        var tableType = $(this).data('type'); // wo_order or pur_order
-        var total = $(this).val();
+        var itemScope = $(this).val();
 
         // Perform AJAX request to update the budget
-        $.post(admin_url + 'purchase/update_order_tracker_contract_amount', {
+        $.post(admin_url + 'purchase/update_order_tracker_item_scope', {
             id: rowId,
-            table: tableType,
-            total: total
+            itemScope: itemScope
         }).done(function(response) {
             response = JSON.parse(response);
             if (response.success) {
@@ -585,6 +580,79 @@
         });
     });
 
+
+    $('body').on('click', '.quantity-display', function(e) {
+        e.preventDefault();
+
+        var rowId = $(this).data('id');
+        var currentval = $(this).text(); // Remove currency formatting
+
+        // Replace the span with an input field
+        $(this).replaceWith('<input type="text" class="form-control quantity-input" value="' + currentval + '" data-id="' + rowId + '">');
+    });
+    $('body').on('change', '.quantity-input', function(e) {
+        e.preventDefault();
+
+        var rowId = $(this).data('id');
+        var quantity = $(this).val();
+
+        // Perform AJAX request to update the budget
+        $.post(admin_url + 'purchase/update_order_tracker_quantity', {
+            id: rowId,
+            quantity: quantity
+        }).done(function(response) {
+            response = JSON.parse(response);
+            if (response.success) {
+                alert_float('success', response.message);
+                let table_order_tracker1 = $('.table-table_order_tracker').DataTable();
+                table_order_tracker1.ajax.reload(null, false); // Reload table without refreshing the page
+            } else {
+                alert_float('danger', response.message);
+            }
+        });
+    });
+
+    $('body').on('click', '.rate-display', function(e) {
+        e.preventDefault();
+
+        var rowId = $(this).data('id');
+        var currentValue = $(this).text().replace(/[^\d.-]/g, ''); // Remove currency formatting
+
+        // Replace the span with an input field
+        $(this).replaceWith('<input type="number" class="form-control rate-input" value="' + currentValue + '" data-id="' + rowId + '">');
+    });
+
+    // Save updated "rate" to the database
+    $('body').on('change', '.rate-input', function(e) {
+        e.preventDefault();
+
+        var rowId = $(this).data('id');
+        var rate = $(this).val();
+
+        // Perform AJAX request to update the anticipate_variation
+        $.post(admin_url + 'purchase/update_order_tracker_rate', {
+            id: rowId,
+            rate: rate
+        }).done(function(response) {
+            response = JSON.parse(response);
+            if (response.success) {
+                alert_float('success', response.message);
+
+                // Replace input back with formatted value
+                var formattedValue = new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR'
+                }).format(rate);
+
+                $('.rate-input[data-id="' + rowId + '"]').replaceWith('<span class="rate-display" data-id="' + rowId + '" d>' + formattedValue + '</span>');
+
+                // Optionally reload the table if necessary
+                table_order_tracker.ajax.reload(null, false);
+            } else {
+                alert_float('danger', response.message);
+            }
+        });
+    });
     // Build a JS array of all vendors (no trailing comma)
     const VENDORS_LIST = [
         <?php foreach ($vendors as $st): ?> {
@@ -597,7 +665,7 @@
 
     // Provide a human-friendly default
     const DATA = {
-        select_vendor: "<?php echo addslashes(_l('select_vendor', 'Select vendor')); ?>"
+        select_vendor: "<?php echo addslashes(_l('', '')); ?>"
     };
 
     // On click, swap the span for a selectpicker
@@ -640,6 +708,138 @@
         $.post(admin_url + 'purchase/change_vendor', {
                 id,
                 vendor: val
+            })
+            .done(function() {
+                const table = $('.table-table_order_tracker').DataTable();
+                table.ajax.reload(function() {
+                    $('#box-loading').empty();
+                    $('#loader-container').addClass('hide');
+                }, false);
+            });
+    });
+
+
+    // Build a JS array of all vendors (no trailing comma)
+    const PROJECTS_LIST = [
+        <?php foreach ($projects as $st): ?> {
+                id: "<?php echo $st['id']; ?>",
+                name: "<?php echo addslashes($st['name']); ?>"
+            }
+            <?php if (end($projects) !== $st) echo ','; ?>
+        <?php endforeach; ?>
+    ];
+
+    // Provide a human-friendly default
+    const DATA_NEW = {
+        select_project: "<?php echo addslashes(_l('', '')); ?>"
+    };
+
+    // On click, swap the span for a selectpicker
+    $('body').on('click', '.company-display', function(e) {
+        e.preventDefault();
+        const $span = $(this);
+        const id = $span.data('id');
+        const selId = ($span.data('company') || '').toString();
+
+        // Build <select>
+        let sel = `<select
+                   class="form-control company-input selectpicker"
+                   data-live-search="true"
+                   data-width="100%"
+                   data-id="${id}">
+                   <option value="">${DATA_NEW.select_project}</option>`;
+
+        PROJECTS_LIST.forEach(v => {
+            const selected = (v.id.toString() === selId) ? ' selected' : '';
+            sel += `<option value="${v.id}"${selected}>${v.name}</option>`;
+        });
+        sel += '</select>';
+
+        // Replace span → select and init
+        $span.replaceWith(sel);
+        const $new = $(`select.company-input[data-id="${id}"]`);
+        $new.selectpicker().focus();
+    });
+
+    // On change, post the new vendor, then reload the row via DataTables
+    $('body').on('changed.bs.select', '.company-input', function(e, clickedIndex, isSelected, previousValue) {
+        const $sel = $(this);
+        const id = $sel.data('id');
+        const val = $sel.val();
+
+        // show loader…
+        $('#box-loading').html('<div class="Box"><span><span></span></span></div>');
+        $('#loader-container').removeClass('hide');
+
+        $.post(admin_url + 'purchase/change_order_tracker_company', {
+                id,
+                owners_company: val
+            })
+            .done(function() {
+                const table = $('.table-table_order_tracker').DataTable();
+                table.ajax.reload(function() {
+                    $('#box-loading').empty();
+                    $('#loader-container').addClass('hide');
+                }, false);
+            });
+    });
+
+
+    // Build a JS array of all UNIT (no trailing comma)
+    const UNIT_LIST = [
+        <?php foreach ($units as $st): ?> {
+                id: "<?php echo $st['id']; ?>",
+                name: "<?php echo addslashes($st['label']); ?>"
+            }
+            <?php if (end($units) !== $st) echo ','; ?>
+        <?php endforeach; ?>
+    ];
+
+    // Provide a human-friendly default
+    const DATA_UNIT= {
+        select_unit: "<?php echo addslashes(_l('', '')); ?>"
+    };
+
+    // On click, swap the span for a selectpicker
+    $('body').on('click', '.unit-display', function(e) {
+        e.preventDefault();
+        const $span = $(this);
+        const id = $span.data('id');
+        const selId = ($span.data('unit') || '').toString();
+
+        // Build <select>
+        let sel = `<select
+                   class="form-control unit-input selectpicker"
+                   data-live-search="true"
+                   data-width="100%"
+                   data-id="${id}">
+                   <option value="">${DATA_UNIT.select_unit}</option>`;
+
+        UNIT_LIST.forEach(v => {
+            const selected = (v.id.toString() === selId) ? ' selected' : '';
+            sel += `<option value="${v.id}"${selected}>${v.name}</option>`;
+        });
+        sel += '</select>';
+
+        // Replace span → select and init
+        $span.replaceWith(sel);
+        const $new = $(`select.unit-input[data-id="${id}"]`);
+        $new.selectpicker().focus();
+    });
+
+    // On change, post the new vendor, then reload the row via DataTables
+    $('body').on('changed.bs.select', '.unit-input', function(e, clickedIndex, isSelected, previousValue) {
+        const $sel = $(this);
+        const id = $sel.data('id');
+        const val = $sel.val();
+
+        // show loader…
+        $('#box-loading').html('<div class="Box"><span><span></span></span></div>');
+        $('#loader-container').removeClass('hide');
+
+        $.post(admin_url + 'purchase/change_order_tracker_unit', {
+                id,
+                unit: val
             })
             .done(function() {
                 const table = $('.table-table_order_tracker').DataTable();

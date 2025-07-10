@@ -1,6 +1,11 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <?php init_head(); ?>
 <style>
+   .table-responsive {
+      overflow-x: visible !important;
+      scrollbar-width: none !important;
+   }
+
    .form-inline textarea.form-control {
 
       width: auto !important;
@@ -86,10 +91,10 @@
 
                      <div class="all_ot_filters">
 
-                        
 
 
-                        
+
+
                         <div class="col-md-2">
                            <?php
                            $vendors_filter = get_module_filter($module_name, 'vendors');
@@ -262,7 +267,7 @@
                            <tr>
                               <th align="left"><?php echo _l('serial_no'); ?></th>
                               <th align="left"><?php echo _l('order_date'); ?></th>
-                              <th align="left"><?php echo _l('Comapany Name'); ?></th>     
+                              <th align="left"><?php echo _l('Comapany Name'); ?></th>
                               <th align="left"><?php echo _l('Item Scope'); ?></th>
                               <th align="left"><?php echo _l('Quantity'); ?></th>
                               <th align="left"><?php echo _l('Rate'); ?></th>
@@ -304,9 +309,9 @@
 </div>
 <div id="order_tracker_file_data"></div>
 
-   <?php init_tail(); ?>
-   <?php require 'modules/purchase/assets/js/import_excel_items_order_tracker_js.php'; ?>
-   <?php require 'modules/purchase/assets/js/order_tracker_js.php'; ?>
-   </body>
+<?php init_tail(); ?>
+<?php require 'modules/purchase/assets/js/import_excel_items_order_tracker_js.php'; ?>
+<?php require 'modules/purchase/assets/js/order_tracker_js.php'; ?>
+</body>
 
-   </html>
+</html>

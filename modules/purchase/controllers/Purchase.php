@@ -10965,6 +10965,7 @@ class purchase extends AdminController
         $data['budget_head'] = $this->purchase_model->get_commodity_group_add_commodity();
         $data['rli_filters'] = $this->purchase_model->get_all_rli_filters();
         $data['sub_groups_pur'] = $this->purchase_model->get_sub_group();
+        $data['units'] = $this->purchase_model->get_units();
         $this->load->view('order_tracker/manage', $data);
     }
     public function update_completion_date()
@@ -11001,27 +11002,16 @@ class purchase extends AdminController
     public function update_order_date()
     {
         $id = $this->input->post('id');
-        $table = $this->input->post('table');
         $order_date = $this->input->post('orderDate');
 
-        if (!$id || !$table || !$order_date) {
+        if (!$id  || !$order_date) {
             echo json_encode(['success' => false, 'message' => _l('invalid_request')]);
             return;
         }
 
-        // Determine the table to update
-        // $tableName = $table === 'wo_orders' ? 'tblwo_orders' : 'tblpur_orders';
-        if ($table === 'pur_orders') {
-            $tableName = 'tblpur_orders';
-        } elseif ($table === 'wo_orders') {
-            $tableName = 'tblwo_orders';
-        } elseif ($table === 'order_tracker') {
-            $tableName = 'tblpur_order_tracker';
-        }
-
         // Perform the update
         $this->db->where('id', $id);
-        $success = $this->db->update($tableName, ['order_date' => $order_date]);
+        $success = $this->db->update('tblpur_order_tracker', ['order_date' => $order_date]);
 
         if ($success) {
             echo json_encode(['success' => true, 'message' => _l('order_date_updated')]);
@@ -11061,91 +11051,63 @@ class purchase extends AdminController
         }
     }
 
-    public function update_order_tracker_contract_amount()
+    public function update_order_tracker_item_scope()
     {
         $id = $this->input->post('id');
-        $table = $this->input->post('table');
-        $total = $this->input->post('total');
+        $itemScope = $this->input->post('itemScope');
 
-        if (!$id || !$table || !$total) {
+        if (!$id  || !$itemScope) {
             echo json_encode(['success' => false, 'message' => _l('invalid_request')]);
             return;
-        }
-
-        if ($table === 'order_tracker') {
-            $tableName = 'tblpur_order_tracker';
         }
 
         // Perform the update
         $this->db->where('id', $id);
-        $success = $this->db->update($tableName, ['total' => $total]);
+        $success = $this->db->update('tblpur_order_tracker', ['item_scope' => $itemScope]);
 
         if ($success) {
-            echo json_encode(['success' => true, 'message' => _l('amount_updated')]);
+            echo json_encode(['success' => true, 'message' => _l('item_scope_updated')]);
         } else {
             echo json_encode(['success' => false, 'message' => _l('update_failed')]);
         }
     }
 
-    public function update_anticipate_variation()
+    public function update_order_tracker_quantity()
     {
         $id = $this->input->post('id');
-        $table = $this->input->post('table');
-        $anticipate_variation = $this->input->post('anticipate_variation');
+        $quantity = $this->input->post('quantity');
 
-        if (!$id || !$table || !$anticipate_variation) {
+        if (!$id  || !$quantity) {
             echo json_encode(['success' => false, 'message' => _l('invalid_request')]);
             return;
         }
 
-        // $tableName = $table === 'wo_orders' ? 'tblwo_orders' : 'tblpur_orders';
+        // Perform the update
+        $this->db->where('id', $id);
+        $success = $this->db->update('tblpur_order_tracker', ['quantity' => $quantity]);
 
-        if ($table === 'pur_orders') {
-            $tableName = 'tblpur_orders';
-        } elseif ($table === 'wo_orders') {
-            $tableName = 'tblwo_orders';
-        } elseif ($table === 'order_tracker') {
-            $tableName = 'tblpur_order_tracker';
+        if ($success) {
+            echo json_encode(['success' => true, 'message' => _l('quantity_updated')]);
+        } else {
+            echo json_encode(['success' => false, 'message' => _l('update_failed')]);
+        }
+    }
+
+    public function update_order_tracker_rate()
+    {
+        $id = $this->input->post('id');
+        $rate = $this->input->post('rate');
+
+        if (!$id || !$rate) {
+            echo json_encode(['success' => false, 'message' => _l('invalid_request')]);
+            return;
         }
 
         $this->db->where('id', $id);
-        $success = $this->db->update($tableName, ['anticipate_variation' => $anticipate_variation]);
+        $success = $this->db->update('tblpur_order_tracker', ['rate' => $rate]);
 
         if ($success) {
-            echo json_encode(['success' => true, 'message' => _l('anticipate_variation_updated')]);
-        } else {
-            echo json_encode(['success' => false, 'message' => _l('update_failed')]);
-        }
-    }
-
-    public function update_final_certified_amount()
-    {
-        $id = $this->input->post('id');
-        $table = $this->input->post('table');
-        $finalCertifiedAmount = $this->input->post('finalCertifiedAmount');
-
-        if (!$id || !$table || !$finalCertifiedAmount) {
-            echo json_encode(['success' => false, 'message' => _l('invalid_request')]);
-            return;
-        }
-        if ($table === 'pur_orders') {
-            $aColumn_name = 'pur_order';
-            $tableName = 'tblpur_invoices';
-        } elseif ($table === 'wo_orders') {
-            $aColumn_name = 'wo_order';
-            $tableName = 'tblpur_invoices';
-        } elseif ($table === 'order_tracker') {
-            $tableName = 'tblpur_order_tracker';
-        }
-        if ($table == 'pur_orders' || $table == 'wo_orders') {
-            $this->db->where($aColumn_name, $id);
-            $success = $this->db->update($tableName, ['final_certified_amount' => $finalCertifiedAmount]);
-        } else {
-            $this->db->where('id', $id);
-            $success = $this->db->update($tableName, ['final_certified_amount' => $finalCertifiedAmount]);
-        }
-        if ($success) {
-            echo json_encode(['success' => true, 'message' => _l('final_certified_amount_updated')]);
+            echo json_encode(['success' => true, 'message' => _l('rate_updated')]);
         } else {
             echo json_encode(['success' => false, 'message' => _l('update_failed')]);
         }
@@ -12266,8 +12228,7 @@ class purchase extends AdminController
         $owners_company = $this->input->post('owners_company');
         $item_key = $this->input->post('item_key');
 
-        echo $this->purchase_model->create_order_tracker_row_template($name, $order_date, $comapny_name, $item_scope, $quantity, $rate, $owners_company, $item_key ,$unit);
-        
+        echo $this->purchase_model->create_order_tracker_row_template($name, $order_date, $comapny_name, $item_scope, $quantity, $rate, $owners_company, $item_key, $unit);
     }
 
     public function update_billing_remarks()
@@ -13295,7 +13256,7 @@ class purchase extends AdminController
         $this->db->where('id', $id);
         $success = $this->db->update(
             db_prefix() . 'pur_order_tracker',
-            ['vendor' => $vendorId ? $vendorId : null] // Store NULL if 0
+            ['comapny' => $vendorId ? $vendorId : null] // Store NULL if 0
         );
 
         if ($success) {
@@ -13303,6 +13264,81 @@ class purchase extends AdminController
                 'success' => true,
                 'message' => _l('vendor_updated_successfully'),
                 'vendor' => $vendorId
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => _l('update_failed')
+            ]);
+        }
+    }
+     public function change_order_tracker_company()
+    {
+        $id = $this->input->post('id');
+        $owners_companyID= $this->input->post('owners_company'); // Expecting single vendor ID
+
+        // Basic validation
+        if (!$id || $owners_companyID === null) {
+            echo json_encode([
+                'success' => false,
+                'message' => _l('invalid_request')
+            ]);
+            return;
+        }
+
+        // Convert to integer (empty string becomes 0)
+        $owners_companyID = (int)trim($owners_companyID);
+
+        // Update database with single vendor ID (or empty if 0)
+        $this->db->where('id', $id);
+        $success = $this->db->update(
+            db_prefix() . 'pur_order_tracker',
+            ['owners_company' => $owners_companyID ? $owners_companyID : null] // Store NULL if 0
+        );
+
+        if ($success) {
+            echo json_encode([
+                'success' => true,
+                'message' => _l('company_updated_successfully'),
+                'vendor' => $owners_companyID
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => _l('update_failed')
+            ]);
+        }
+    }
+
+     public function change_order_tracker_unit()
+    {
+        $id = $this->input->post('id');
+        $unitID= $this->input->post('unit'); // Expecting single vendor ID
+
+        // Basic validation
+        if (!$id || $unitID === null) {
+            echo json_encode([
+                'success' => false,
+                'message' => _l('invalid_request')
+            ]);
+            return;
+        }
+
+        // Convert to integer (empty string becomes 0)
+        $unitID = (int)trim($unitID);
+
+        // Update database with single vendor ID (or empty if 0)
+        $this->db->where('id', $id);
+        $success = $this->db->update(
+            db_prefix() . 'pur_order_tracker',
+            ['unit' => $unitID ? $unitID : null] // Store NULL if 0
+        );
+
+        if ($success) {
+            echo json_encode([
+                'success' => true,
+                'message' => _l('company_updated_successfully'),
+                'vendor' => $unitID
             ]);
         } else {
             echo json_encode([
