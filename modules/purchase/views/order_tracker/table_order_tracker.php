@@ -244,7 +244,7 @@ foreach ($rResult as $aRow) {
     } else {
         // Render as an editable input if no total exists
         $rate_html = '<input type="number" class="form-control rate-input" 
-                         placeholder="Enter Conatact Rate" 
+                         placeholder="Enter Rate" 
                          data-id="' . $aRow['id'] . '" >';
     }
     $row[] = $rate_html;
