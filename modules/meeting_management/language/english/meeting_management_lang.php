@@ -41,11 +41,11 @@ $lang['meeting_signature_saved_success'] = 'Signature saved successfully.';
 $lang['meeting_error'] = 'An error occurred. Please try again.';
 
 $lang['select_client'] = 'Select Client';
-$lang['select_project'] = 'Select Company';
-$lang['no_projects_available'] = 'No Company Available';
+$lang['select_project'] = 'Select Owners Company';
+$lang['no_projects_available'] = 'No Owners Company Available';
 
 
-$lang['project'] = 'Company';
+$lang['project'] = 'Owners Company';
 $lang['options'] = 'Options';
 $lang['edit'] = 'Edit';
 $lang['delete'] = 'Delete';
@@ -127,8 +127,8 @@ $lang['view_meeting'] = 'View Meeting';
 $lang['meeting_notes'] = 'Meeting Notes';
 $lang['no_meetings_found'] = 'No meetings found';
 $lang['meeting_updated_success'] = 'Meeting updated successfully';
-$lang['filter_by_project'] = 'Company';
-$lang['all_projects'] = 'All Company';
+$lang['filter_by_project'] = 'Owners Company';
+$lang['all_projects'] = 'All Owners Company';
 $lang['meeting_critical_agenda'] = 'Critical Tracker';
 $lang['change_status_successfully'] = 'Status Changed Successfully';
 $lang['change_status_fail'] = 'Change Status Failed';
