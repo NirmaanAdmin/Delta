@@ -273,6 +273,14 @@ class Download extends App_Controller
             }
 
             $path = get_upload_path_by_type('estimate_request') . $attachment->rel_id . '/' . $attachment->file_name;
+        } elseif ($folder_indicator == 'project_logo') {    
+            $this->db->where('id', $attachmentid);
+            $attachment = $this->db->get(db_prefix() . 'project_logo_attachments')->row();
+            if (!$attachment) {
+                show_404();
+            }
+            $path = get_upload_path_by_type('project_logo') . $attachment->project_id . '/' . $attachment->file_name;
+
         } else {
             die('folder not specified');
         }

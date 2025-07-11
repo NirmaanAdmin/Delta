@@ -203,6 +203,7 @@ define('LEAD_ATTACHMENTS_FOLDER', FCPATH . 'uploads/leads' . '/');
  * Project files attachments
  */
 define('PROJECT_ATTACHMENTS_FOLDER', FCPATH . 'uploads/projects' . '/');
+define('PROJECT_LOGO_FOLDER', FCPATH . 'uploads/projects_logo' . '/');
 /**
  * Project discussions attachments
  */

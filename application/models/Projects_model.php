@@ -762,10 +762,14 @@ class Projects_model extends App_Model
             $tags = $data['tags'];
             unset($data['tags']);
         }
-
+        // echo '<pre>'; print_r($data);exit;
         $this->db->insert(db_prefix() . 'projects', $data);
         $insert_id = $this->db->insert_id();
         if ($insert_id) {
+            $attachments = handle_project_logo_attachments($insert_id);
+            if ($attachments) {
+                $this->insert_project_logo_attachments_to_database($attachments, $insert_id);
+            }
             handle_tags_save($tags, $insert_id, 'project');
 
             if (isset($custom_fields)) {
@@ -857,7 +861,15 @@ class Projects_model extends App_Model
 
         return false;
     }
+    public function insert_project_logo_attachments_to_database($attachments, $project_id)
+    {
+        foreach ($attachments as $attachment) {
+            $attachment['project_id']  = $project_id;
+            $attachment['dateadded'] = date('Y-m-d H:i:s');
 
+            $this->db->insert(db_prefix() . 'project_logo_attachments', $attachment);
+        }
+    }
     public function update($data, $id)
     {
         $this->db->select('status');
@@ -1018,10 +1030,31 @@ class Projects_model extends App_Model
             }
         }
 
+        // Get the old logo filename before updating
+        $old_logo = $this->get_project_logo_filename($id);
+
         $data = hooks()->apply_filters('before_update_project', $data, $id);
 
         $this->db->where('id', $id);
         $this->db->update(db_prefix() . 'projects', $data);
+
+        if (isset($_FILES['logo']) && !empty($_FILES['logo']['name'])) {
+            // Delete old logo if exists
+            if ($old_logo) {
+                $this->delete_project_logo($id, $old_logo);
+            }
+
+            // Upload new logo
+            $attachments = handle_project_logo_attachments($id);
+            if ($attachments) {
+                // First remove any existing logo references from database
+                $this->db->where('project_id', $id);
+                $this->db->delete(db_prefix() . 'project_logo_attachments');
+
+                // Insert new logo
+                $this->insert_project_logo_attachments_to_database($attachments, $id);
+            }
+        }
 
         if ($this->db->affected_rows() > 0) {
             if (isset($mark_all_tasks_as_completed)) {
@@ -1070,6 +1103,29 @@ class Projects_model extends App_Model
         }
 
         return false;
+    }
+
+    private function get_project_logo_filename($project_id)
+    {
+        $this->db->select('file_name');
+        $this->db->where('project_id', $project_id);
+        $this->db->limit(1);
+        $result = $this->db->get(db_prefix() . 'project_logo_attachments')->row();
+        return $result ? $result->file_name : null;
+    }
+
+    private function delete_project_logo($project_id, $filename)
+    {
+        $path = get_upload_path_by_type('project_logo') . $project_id . '/';
+
+        if (file_exists($path . $filename)) {
+            unlink($path . $filename);
+        }
+
+        // Clean up directory if empty
+        if (is_dir($path) && count(scandir($path)) == 2) {
+            rmdir($path);
+        }
     }
 
     /**
@@ -2778,7 +2834,7 @@ class Projects_model extends App_Model
         return $result;
     }
 
-    public function create_project_directory_row_template($name = '', $com_con_name = '', $address = '', $fullnameinput = '',$designation = '', $contact = '', $email_account = '', $item_key = '')
+    public function create_project_directory_row_template($name = '', $com_con_name = '', $address = '', $fullnameinput = '', $designation = '', $contact = '', $email_account = '', $item_key = '')
     {
         $row = '';
         $is_template = ($name == '');
@@ -2809,7 +2865,7 @@ class Projects_model extends App_Model
         // $selectedvendors = !empty($vendors) ? (is_array($vendors) ? $vendors : explode(",", $vendors)) : [];
 
         // Position
-        
+
         $row .= '<td class="com_con_name">' . render_input($name_com_con_name, '', $com_con_name, '', ['placeholder' => 'Company/Consultant Name']) . '</td>';
         $row .= '<td class="address">' . render_input($name_address, '', $address, '', ['placeholder' => 'Address']) . '</td>';
         // if ($vendors < 0) {
@@ -2988,5 +3044,13 @@ class Projects_model extends App_Model
         }
 
         return false;
+    }
+
+    public function get_project_logo($project_id)
+    {
+        $this->db->select('*');
+        $this->db->from(db_prefix() . 'project_logo_attachments');
+        $this->db->where('project_id', $project_id);
+        return $this->db->get()->row();
     }
 }

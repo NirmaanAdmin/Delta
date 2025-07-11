@@ -1945,6 +1945,11 @@ function get_upload_path_by_type($type)
             $path = MEETING_FOLDER;
 
             break;
+
+        case 'project_logo':
+            $path = PROJECT_LOGO_FOLDER;
+
+            break;
     }
 
     return hooks()->apply_filters('get_upload_path_by_type', $path, $type);
@@ -2001,6 +2006,58 @@ function handle_form_attachments($formid, $index_name = 'attachments')
     if (count($uploaded_files) > 0) {
         return $uploaded_files;
     }
+    return false;
+}
+function handle_project_logo_attachments($project_id, $index_name = 'logo')
+{
+    if (!is_dir(get_upload_path_by_type('project_logo'))) {
+        mkdir(get_upload_path_by_type('project_logo'), 0755);
+    }
+
+    $path = get_upload_path_by_type('project_logo') . $project_id . '/';
+
+    if (isset($_FILES[$index_name]) && !empty($_FILES[$index_name]['name'])) {
+        hooks()->do_action('before_upload_form_attachment', $project_id);
+
+        // Get file info
+        $tmpFilePath = $_FILES[$index_name]['tmp_name'];
+        $fileName = $_FILES[$index_name]['name'];
+        $fileType = $_FILES[$index_name]['type'];
+
+        // Validate it's an image
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        $file_info = getimagesize($tmpFilePath);
+
+        if (!$file_info || !in_array($file_info['mime'], $allowed_types)) {
+            return false;
+        }
+
+        // Validate file extension
+        $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+        if (!in_array($extension, $allowed_extensions)) {
+            return false;
+        }
+
+        // Create directory if needed
+        _maybe_create_upload_path($path);
+
+        // Generate unique filename
+        $filename = unique_filename($path, $fileName);
+        $newFilePath = $path . $filename;
+
+        // Move uploaded file
+        if (move_uploaded_file($tmpFilePath, $newFilePath)) {
+            return [
+                [
+                    'file_name' => $filename,
+                    'filetype' => $fileType,
+                ]
+            ];
+        }
+    }
+
     return false;
 }
 function handle_ckecklist_item_attachment_array($related, $form_id, $item_id, $index_name, $itemIndex)

@@ -129,7 +129,7 @@ class Projects extends AdminController
         $data['settings'] = $this->projects_model->get_settings();
         $data['statuses'] = $this->projects_model->get_project_statuses();
         $data['staff']    = $this->staff_model->get('', ['active' => 1]);
-
+        $data['project_logo'] = $this->projects_model->get_project_logo($id);
         $data['title'] = $title;
         $this->load->view('admin/projects/project', $data);
     }
@@ -281,7 +281,7 @@ class Projects extends AdminController
 
                 @$percent_circle        = $percent / 100;
                 $data['percent_circle'] = $percent_circle;
-
+                $data['project_logo'] = $this->projects_model->get_project_logo($id);
                 $data['project_overview_chart'] = (new HoursOverviewChart(
                     $id,
                     ($this->input->get('overview_chart') ? $this->input->get('overview_chart') : 'this_week')

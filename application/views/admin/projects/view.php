@@ -61,9 +61,9 @@
                                         </svg>
                                     </a>
                                 </div>
-                                <?php
+                                <!-- <?php
                                 echo '<span class="tw-ml-1 project_status tw-inline-block label project-status-' . $project->status . '" style="color:' . $project_status['color'] . ';border:1px solid ' . adjust_hex_brightness($project_status['color'], 0.4) . ';background: ' . adjust_hex_brightness($project_status['color'], 0.04) . ';">' . e($project_status['name']) . '</span>';
-                            ?>
+                            ?> -->
                             </div>
                         </div>
                         <div class="col-md-5 text-right tw-space-x-1">
