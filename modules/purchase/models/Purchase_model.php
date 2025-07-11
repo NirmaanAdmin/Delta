@@ -7877,23 +7877,74 @@ class Purchase_model extends App_Model
         if (!empty($company_logo)) {
             $logo = '<img src="' . base_url('uploads/company/' . $company_logo) . '" width="230" height="100">';
         }
-
+        $get_owners_company_details = get_project_details_by_id($pur_estimate->project);
         $html = '<table class="table">
         <tbody>
           <tr>
-            <td>
-                ' . $logo . '
-                ' . format_organization_info() . '
-            </td>
-            <td style="position: absolute; float: right;">
+            <td>';
+
+        // Add logo if exists
+        $html .= $logo;
+        if (!empty($get_owners_company_details) && isset($get_owners_company_details->name)) {
+            $html .= '<b style="color:black" class="company-name-formatted">' . htmlspecialchars($get_owners_company_details->name) . '</b><br>';
+
+            // Address
+            if (!empty($get_owners_company_details->address)) {
+                $html .= htmlspecialchars($get_owners_company_details->address) . '<br>';
+            }
+
+            // City, State, Zip
+            $locationParts = [];
+            if (!empty($get_owners_company_details->city)) {
+                $locationParts[] = htmlspecialchars($get_owners_company_details->city);
+            }
+            if (!empty($get_owners_company_details->state)) {
+                $locationParts[] = htmlspecialchars($get_owners_company_details->state);
+            }
+            if (!empty($get_owners_company_details->zip_code)) {
+                $locationParts[] = htmlspecialchars($get_owners_company_details->zip_code);
+            }
+            if (!empty($locationParts)) {
+                $html .= implode(', ', $locationParts) . '<br>';
+            }
+            //website
+            if (!empty($get_owners_company_details->website)) {
+                $html .= '<b style="color:black" class="company-name-formatted">Website:</b> ' .
+                    htmlspecialchars($get_owners_company_details->website) . '<br>';
+            }
+            // Phone
+            if (!empty($get_owners_company_details->phonenumber)) {
+                $html .= '<b style="color:black" class="company-name-formatted">Phone:</b> ' .
+                    htmlspecialchars($get_owners_company_details->phonenumber) . '<br>';
+            }
+            // Email
+            if (!empty($get_owners_company_details->email)) {
+                $html .= '<b style="color:black" class="company-name-formatted">Email:</b> ' .
+                    htmlspecialchars($get_owners_company_details->email) . '<br>';
+            }
+
+            // PAN
+            if (!empty($get_owners_company_details->pan_number)) {
+                $html .= '<b style="color:black" class="company-name-formatted">PAN:</b> ' .
+                    htmlspecialchars($get_owners_company_details->pan_number) . '<br>';
+            }
+
+            // GST
+            if (!empty($get_owners_company_details->gst_number)) {
+                $html .= '<b style="color:black" class="company-name-formatted">GST:</b> ' .
+                    htmlspecialchars($get_owners_company_details->gst_number);
+            }
+        }
+
+        $html .= '</td><td style="position: absolute; float: right;">
                 <span style="text-align: right; font-size: 25px"><b>' . mb_strtoupper(_l('estimate')) . '</b></span><br />
                 <span style="text-align: right;">' . format_pur_estimate_number($pur_estimate_id) . '</span><br />
                 <span style="text-align: right;"><b>' . _l('estimate_add_edit_date') . ':</b> ' . date('d-m-Y', strtotime($pur_estimate->date)) . '</span><br />
-                <span style="text-align: right;"><b>' . _l('project') . ':</b> ' . get_project_name_by_id($pur_estimate->project) . '</span><br />
+               
                 <span style="text-align: right;"><b>' . _l('add_from') . ':</b> ' . get_staff_full_name($pur_estimate->addedfrom) . '</span><br /><br />
                 <span style="text-align: right;">' . format_pdf_vendor_info($pur_estimate->vendor->userid) . '</span><br />
-                <span style="text-align: right;"><b>' . _l('group_pur') . ':</b> ' . $this->get_budget_head_estimate($pur_estimate_id) . '</span><br />
-                <span style="text-align: right;"><b>' . _l('sub_groups_pur') . ':</b> ' . $this->get_budget_sub_head_estimate($pur_estimate_id) . '</span><br />
+                
+                
             </td>
           </tr>
         </tbody>
@@ -7985,7 +8036,66 @@ class Purchase_model extends App_Model
                  </td>
               </tr>';
 
-        $html .= ' </tbody></table>';
+        $html .= ' </tbody></table><br><br>';
+
+
+        $html .= '<p style="text-align: center; margin-bottom: 0;">
+        Please provide your company full details along with GST No. while placing an order.
+      </p>
+      <p style="text-align: center; margin: 5px 0;">
+        We hope the offer is in line with your expectation, looking forward to your esteem order.
+      </p>
+      <p style="text-align: center; margin-top: 0;">
+        Meanwhile thanking you and assuring you our best service at all the times we remain.
+      </p>
+      
+      <table style="width: 100%; border: none; margin-top: 15px;">
+        <tr>
+          <!-- Left Column - Signature -->
+          <td style="width: 65%; vertical-align: top; padding: 0;">
+            <span style="font-size: 14px; font-weight: bold;">Thanks & Regards</span><br>
+            <span style="font-size: 11px; ">For '.$get_owners_company_details->name.'</span><br>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 5px;">
+              <tr>
+                <td style="width: 40%; padding: 3px 0;font-size: 14px;">HARSH DAVDA (C.E.O)</td>
+                <td style="width: 40%; padding: 3px 0;font-size: 14px;">: +91 9429199536</td>
+              </tr>
+              <tr>
+                <td style="padding: 3px 0;font-size: 14px;">PANTHESH PATEL (ADMIN)</td>
+                <td style="padding: 3px 0;font-size: 14px;">: +91 9824273674</td>
+              </tr>
+            </table>
+          </td>
+          
+          <!-- Right Column - Bank Details -->
+          <td style="width: 35%; vertical-align: top; padding-left: 50px;">
+            <span style="font-size: 14px; font-weight: bold;">Bank Account Details</span><br>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 5px;">
+              <tr>
+                <td style="width: 35%; padding: 3px 0; font-weight: bold; font-size:14px !important">Company Name</td>
+                <td style="width: 65%; padding: 3px 0; font-size:14px !important">: '.$get_owners_company_details->name.'</td>
+              </tr>
+              <tr>
+                <td style="padding: 3px 0; font-weight: bold;font-size:14px !important">Account No</td>
+                <td style="padding: 3px 0;font-size:14px !important">: '.$get_owners_company_details->account_no.'</td>
+              </tr>
+              <tr>
+                <td style="padding: 3px 0; font-weight: bold;font-size:14px !important">Bank Name</td>
+                <td style="padding: 3px 0;font-size:14px !important">: '.$get_owners_company_details->bank_name.'</td>
+              </tr>
+              <tr>
+                <td style="padding: 3px 0; font-weight: bold;font-size:14px !important">IFSC Code</td>
+                <td style="padding: 3px 0;font-size:14px !important">: '.$get_owners_company_details->ifsc_code.'</td>
+              </tr>
+              <tr>
+                <td style="padding: 3px 0; font-weight: bold;font-size:14px !important">Branch</td>
+                <td style="padding: 3px 0;font-size:14px !important">: '.$get_owners_company_details->bank_branch.'</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <div style="height: 20px;"></div>';
 
         $html .= '<div class="col-md-12 mtop15">
                         <h4>' . _l('terms_and_conditions') . ': </h4><p>' . nl2br($pur_estimate->terms) . '</p>
@@ -17746,7 +17856,7 @@ class Purchase_model extends App_Model
         $this->db->update('tblpur_invoices', array('bil_total' => $total));
         return true;
     }
-    public function create_order_tracker_row_template($name = '', $order_date = '', $comapny_name = '', $item_scope = '', $quantity = '', $rate = '', $owners_company = '', $item_key = '',$unit_name = '')
+    public function create_order_tracker_row_template($name = '', $order_date = '', $comapny_name = '', $item_scope = '', $quantity = '', $rate = '', $owners_company = '', $item_key = '', $unit_name = '')
     {
         $row = '';
         $name_order_date = 'order_date';
@@ -17851,7 +17961,7 @@ class Purchase_model extends App_Model
 
     public function add_order_tracker($data)
     {
-        
+
         unset($data['order_date']);
         unset($data['company_name']);
         unset($data['item_scope']);
@@ -19791,7 +19901,7 @@ class Purchase_model extends App_Model
     public function get_order_tracker_pdf_html()
     {
         $get_order_tracker = $this->get_order_tracker_pdf();
-  
+
         $html = '';
         $html .=  '<table class="table purorder-item" style="width: 100%">
         <thead>
@@ -19829,10 +19939,10 @@ class Purchase_model extends App_Model
             $html .= '
                 <td style="width: 14%">' . $order_date . '</td>
                 <td style="width: 14%">' . $row['company_name'] . '</td>';
-          
+
             $html .= '
                 <td style="width: 14%">' . $row['item_scope'] . '</td>
-                <td style="width: 10%">' . $row['quantity'] .' ' . $row['unit_name'] .'</td>
+                <td style="width: 10%">' . $row['quantity'] . ' ' . $row['unit_name'] . '</td>
                 <td style="width: 10%">₹ ' . $row['rate'] . '</td>
                 <td style="width: 22%">' . $row['owners_company'] . '</td>
                 <td style="width: 14%">' . $order_status_labels[$row['order_status']]['text'] . '</td>

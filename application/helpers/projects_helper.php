@@ -339,6 +339,25 @@ function get_project_name_by_id($id)
     return '';
 }
 
+function get_project_details_by_id($id)
+{
+    $CI      = & get_instance();
+    $project = $CI->app_object_cache->get('project-name-data-' . $id);
+
+    if (!$project) {
+        $CI->db->select('*');
+        $CI->db->where('id', $id);
+        $project = $CI->db->get(db_prefix() . 'projects')->row();
+        $CI->app_object_cache->add('project-name-data-' . $id, $project);
+    }
+
+    if ($project) {
+        return $project;
+    }
+
+    return '';
+}
+
 /**
  * Return project milestones
  * @param  mixed $project_id project id

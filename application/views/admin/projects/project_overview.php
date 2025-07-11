@@ -242,7 +242,30 @@
                                     <?php echo e($project_status['name']); ?>
                                 </dd>
                             </div> -->
-
+                            <div class="sm:tw-col-span-1 project-overview-date-phone">
+                                <dt class="tw-text-sm tw-font-medium tw-text-neutral-500">
+                                    <?php echo _l('Phone'); ?>
+                                </dt>
+                                <dd class="tw-mt-1 tw-text-sm tw-text-neutral-900">
+                                    <?php echo e(_d($project->phonenumber)); ?>
+                                </dd>
+                            </div>
+                            <div class="sm:tw-col-span-1 project-overview-date-email">
+                                <dt class="tw-text-sm tw-font-medium tw-text-neutral-500">
+                                    <?php echo _l('Email'); ?>
+                                </dt>
+                                <dd class="tw-mt-1 tw-text-sm tw-text-neutral-900">
+                                    <?php echo e(_d($project->email)); ?>
+                                </dd>
+                            </div>
+                            <div class="sm:tw-col-span-1 project-overview-date-website">
+                                <dt class="tw-text-sm tw-font-medium tw-text-neutral-500">
+                                    <?php echo _l('Website'); ?>
+                                </dt>
+                                <dd class="tw-mt-1 tw-text-sm tw-text-neutral-900">
+                                    <?php echo e(_d($project->website)); ?>
+                                </dd>
+                            </div>
                             <div class="sm:tw-col-span-1 project-overview-date-created">
                                 <dt class="tw-text-sm tw-font-medium tw-text-neutral-500">
                                     <?php echo _l('project_datecreated'); ?>

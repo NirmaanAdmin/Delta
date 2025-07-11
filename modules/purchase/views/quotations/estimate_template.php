@@ -155,7 +155,7 @@
               <?php } ?>
             </select>
           </div>
-          <div class="col-md-6">
+          <!-- <div class="col-md-6">
 
             <?php
             $selected = '';
@@ -173,7 +173,7 @@
             }
             echo render_select('group_pur', $commodity_groups_pur, array('id', 'name'), 'Budget Head', $selected);
             ?>
-          </div>
+          </div> -->
         </div>
 
         <div class="clearfix mbot15"></div>
@@ -248,7 +248,7 @@
             </div>
           </div>
           
-            <div class="col-md-6 ">
+            <!-- <div class="col-md-6 ">
 
               <?php
 
@@ -267,7 +267,7 @@
               }
               echo render_select('sub_groups_pur', $sub_groups_pur, array('id', 'sub_group_name'), 'Budget Sub Head', $selected);
               ?>
-            </div>
+            </div> -->
             <div class="col-md-6 ">
 
               <?php
@@ -275,7 +275,7 @@
               ?>
             </div>
             
-            <div class="col-md-6 ">
+            <!-- <div class="col-md-6 ">
 
               <?php
 
@@ -294,7 +294,7 @@
               }
               echo render_select('area_pur', $area_pur, array('id', 'area_name'), 'Area', $selected);
               ?>
-            </div> 
+            </div>  -->
             
           
         </div>

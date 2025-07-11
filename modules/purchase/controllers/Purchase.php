@@ -886,8 +886,8 @@ class purchase extends AdminController
                 if (!has_permission('purchase_quotations', '', 'create')) {
                     access_denied('quotations');
                 }
-
-                $id = $this->purchase_model->add_estimate($estimate_data);
+               
+                $id = $this->purchase_model->add_estimate($estimate_data); 
                 if ($id) {
                     set_alert('success', _l('added_successfully', _l('estimate')));
 
@@ -5609,7 +5609,7 @@ class purchase extends AdminController
         }
 
         $pur_estimate = $this->purchase_model->get_purestimate_pdf_html($id);
-
+       
         try {
             $pdf = $this->purchase_model->purestimate_pdf($pur_estimate, $id);
         } catch (Exception $e) {

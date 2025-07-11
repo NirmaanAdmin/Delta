@@ -51,17 +51,29 @@
                                         <?php $value = (isset($project) ? $project->address : ''); ?>
                                         <?php echo render_input('address', 'address', $value); ?>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <?php $value = (isset($project) ? $project->city : ''); ?>
                                         <?php echo render_input('city', 'city', $value); ?>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <?php $value = (isset($project) ? $project->state : ''); ?>
                                         <?php echo render_input('state', 'State', $value); ?>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
+                                        <?php $value = (isset($project) ? $project->website : ''); ?>
+                                        <?php echo render_input('website', 'Website', $value); ?>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <?php $value = (isset($project) ? $project->email : ''); ?>
+                                        <?php echo render_input('email', 'Email', $value,'email'); ?>
+                                    </div>
+                                    <div class="col-md-3">
                                         <?php $value = (isset($project) ? $project->zip_code : ''); ?>
                                         <?php echo render_input('zip_code', 'Zip Code', $value); ?>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <?php $value = (isset($project) ? $project->phonenumber : ''); ?>
+                                        <?php echo render_input('phonenumber', 'Phone', $value); ?>
                                     </div>
                                     <div class="col-md-6">
                                         <?php $value = (isset($project) ? $project->gst_number : ''); ?>
