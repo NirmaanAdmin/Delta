@@ -136,7 +136,7 @@
                                     <?php echo _l('LOGO'); ?>
                                 </dt>
                                 <dd class="tw-mt-1 tw-text-sm tw-text-neutral-900">
-                                    <!-- <?php
+                                    <?php
                                     if ($project_logo) {
 
                                         echo '<div class="row">';
@@ -171,9 +171,9 @@
                                         </div>
 
                                     <?php
-                                    }
-                                    echo '</div>';
-                                    ?> -->
+                                    } ?>
+
+
                                 </dd>
                             </div>
 
