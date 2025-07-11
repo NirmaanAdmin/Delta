@@ -135,19 +135,20 @@
                                 <dt class="tw-text-sm tw-font-medium tw-text-neutral-500">
                                     <?php echo _l('LOGO'); ?>
                                 </dt>
-                                <dd class="tw-mt-1 tw-text-sm tw-text-neutral-900"><?php
-                                                                                    if ($project_logo) {
+                                <dd class="tw-mt-1 tw-text-sm tw-text-neutral-900">
+                                    <!-- <?php
+                                    if ($project_logo) {
 
-                                                                                        echo '<div class="row">';
-                                                                                        $path     = get_upload_path_by_type('project_logo') . $project_logo->project_id . '/' . $project_logo->file_name;
-                                                                                        $is_image = is_image($path);
-                                                                                    ?>
+                                        echo '<div class="row">';
+                                        $path     = get_upload_path_by_type('project_logo') . $project_logo->project_id . '/' . $project_logo->file_name;
+                                        $is_image = is_image($path);
+                                    ?>
 
                                         <div class="col-md-3 attachment-item">
                                             <?php
-                                                                                        // if ($is_image) {
-                                                                                        echo '<div class="preview_image">';
-                                                                                        // } 
+                                            // if ($is_image) {
+                                            echo '<div class="preview_image">';
+                                            // } 
                                             ?>
 
                                             <a href="<?php echo site_url('download/file/project_logo/' . $project_logo->id); ?>"
@@ -162,17 +163,17 @@
                                             </a>
 
                                             <?php
-                                                                                        // if ($is_image) {
-                                                                                        echo '</div>';
-                                                                                        // }
+                                            // if ($is_image) {
+                                            echo '</div>';
+                                            // }
 
                                             ?>
                                         </div>
 
                                     <?php
-                                                                                    }
-                                                                                    echo '</div>';
-                                    ?>
+                                    }
+                                    echo '</div>';
+                                    ?> -->
                                 </dd>
                             </div>
 
