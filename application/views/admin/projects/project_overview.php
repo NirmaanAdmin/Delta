@@ -103,11 +103,17 @@
                                 <dd class="tw-mt-1 tw-text-sm tw-text-neutral-900"><?php echo e($project->address); ?></dd>
                             </div>
 
-                            <div class="sm:tw-col-span-1 project-overview-city-state">
+                            <div class="sm:tw-col-span-1 project-overview-city">
                                 <dt class="tw-text-sm tw-font-medium tw-text-neutral-500">
-                                    <?php echo _l('City / State'); ?>
+                                    <?php echo _l('City'); ?>
                                 </dt>
-                                <dd class="tw-mt-1 tw-text-sm tw-text-neutral-900"><?php echo e($project->city); ?> / <?php echo e($project->state); ?></dd>
+                                <dd class="tw-mt-1 tw-text-sm tw-text-neutral-900"><?php echo e($project->city); ?> </dd>
+                            </div>
+                            <div class="sm:tw-col-span-1 project-overview-state">
+                                <dt class="tw-text-sm tw-font-medium tw-text-neutral-500">
+                                    <?php echo _l('State'); ?>
+                                </dt>
+                                <dd class="tw-mt-1 tw-text-sm tw-text-neutral-900"><?php echo e($project->state); ?> </dd>
                             </div>
 
                             <div class="sm:tw-col-span-1 project-overview-zip-code">

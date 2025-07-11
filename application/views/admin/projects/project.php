@@ -46,66 +46,93 @@
                                 ?>
                                 <?php $value = (isset($project) ? $project->name : ''); ?>
                                 <?php echo render_input('name', 'project_name', $value); ?>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <?php $value = (isset($project) ? $project->address : ''); ?>
+                                        <?php echo render_input('address', 'address', $value); ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <?php $value = (isset($project) ? $project->city : ''); ?>
+                                        <?php echo render_input('city', 'city', $value); ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <?php $value = (isset($project) ? $project->state : ''); ?>
+                                        <?php echo render_input('state', 'State', $value); ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <?php $value = (isset($project) ? $project->zip_code : ''); ?>
+                                        <?php echo render_input('zip_code', 'Zip Code', $value); ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <?php $value = (isset($project) ? $project->gst_number : ''); ?>
+                                        <?php echo render_input('gst_number', 'GST Number', $value); ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <?php $value = (isset($project) ? $project->pan_number : ''); ?>
+                                        <?php echo render_input('pan_number', 'PAN', $value); ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <?php echo render_input('logo', 'Company Logo', $value, 'file', ['accept' => 'image/*']); ?>
 
-                                <?php $value = (isset($project) ? $project->address : ''); ?>
-                                <?php echo render_input('address', 'address', $value); ?>
+                                        <?php
+                                        if ($project_logo) {
 
-                                <?php $value = (isset($project) ? $project->city : ''); ?>
-                                <?php echo render_input('city', 'city', $value); ?>
+                                            echo '<hr /><div class="row">';
+                                            $path     = get_upload_path_by_type('project_logo') . $project_logo->project_id . '/' . $project_logo->file_name;
+                                            $is_image = is_image($path);
+                                        ?>
 
-                                <?php $value = (isset($project) ? $project->state : ''); ?>
-                                <?php echo render_input('state', 'State', $value); ?>
+                                            <div class="col-md-3 attachment-item">
+                                                <?php
+                                                // if ($is_image) {
+                                                echo '<div class="preview_image">';
+                                                // } 
+                                                ?>
 
-                                <?php $value = (isset($project) ? $project->zip_code : ''); ?>
-                                <?php echo render_input('zip_code', 'Zip Code', $value); ?>
+                                                <a href="<?php echo site_url('download/file/project_logo/' . $project_logo->id); ?>"
+                                                    class="display-block mbot5" <?php if ($is_image) { ?>
+                                                    data-lightbox="attachment-form-<?php echo e($project_logo->project_id); ?>" <?php } ?>>
+                                                    <i class="<?php echo get_mime_class($project_logo->filetype); ?>"></i>
+                                                    <?php echo e($project_logo->file_name); ?>
+                                                    <?php if ($is_image) { ?>
+                                                        <img class="mtop5 img-responsive"
+                                                            src="<?php echo site_url('download/preview_image?path=' . protected_file_url_by_path($path) . '&type=' . $project_logo->filetype); ?>">
+                                                    <?php } ?>
+                                                </a>
 
-                                <?php $value = (isset($project) ? $project->gst_number : ''); ?>
-                                <?php echo render_input('gst_number', 'GST Number', $value); ?>
+                                                <?php
+                                                // if ($is_image) {
+                                                echo '</div>';
+                                                // }
 
-                                <?php $value = (isset($project) ? $project->pan_number : ''); ?>
-                                <?php echo render_input('pan_number', 'PAN', $value); ?>
+                                                ?>
+                                            </div>
 
-                                <!-- <?php $value = (isset($project) ? $project->pan_number : ''); ?> -->
-                                <?php echo render_input('logo', 'Company Logo', $value, 'file', ['accept' => 'image/*']); ?>
-                                    
-                                <?php
-                                if ($project_logo) {
+                                        <?php
+                                            echo '</div><hr />';
+                                        }
 
-                                    echo '<hr /><div class="row">';
-                                        $path     = get_upload_path_by_type('project_logo') . $project_logo->project_id . '/' . $project_logo->file_name;
-                                        $is_image = is_image($path);
-                                ?>
+                                        ?>
 
-                                        <div class="col-md-3 attachment-item">
-                                            <?php
-                                            // if ($is_image) {
-                                            echo '<div class="preview_image">';
-                                            // } 
-                                            ?>
 
-                                            <a href="<?php echo site_url('download/file/project_logo/' . $project_logo->id); ?>"
-                                                class="display-block mbot5" <?php if ($is_image) { ?>
-                                                data-lightbox="attachment-form-<?php echo e($project_logo->project_id); ?>" <?php } ?>>
-                                                <i class="<?php echo get_mime_class($project_logo->filetype); ?>"></i>
-                                                <?php echo e($project_logo->file_name); ?>
-                                                <?php if ($is_image) { ?>
-                                                    <img class="mtop5 img-responsive"
-                                                        src="<?php echo site_url('download/preview_image?path=' . protected_file_url_by_path($path) . '&type=' . $project_logo->filetype); ?>">
-                                                <?php } ?>
-                                            </a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <?php
+                                        $selected = [];
+                                        if (isset($project_members)) {
+                                            foreach ($project_members as $member) {
+                                                array_push($selected, $member['staff_id']);
+                                            }
+                                        } else {
+                                            array_push($selected, get_staff_user_id());
+                                        }
+                                        echo render_select('project_members[]', $staff, ['staffid', ['firstname', 'lastname']], 'project_members', $selected, ['multiple' => true, 'data-actions-box' => true], [], '', '', false);
+                                        ?>
+                                    </div>
 
-                                            <?php
-                                            // if ($is_image) {
-                                            echo '</div>';
-                                            // }
+                                </div>
 
-                                            ?>
-                                        </div>
 
-                                <?php
-                                    }
-                                    echo '</div><hr />';
-                                ?>
                                 <p class="bold"><?php echo _l('project_description'); ?></p>
                                 <?php $contents = '';
                                 if (isset($project)) {
