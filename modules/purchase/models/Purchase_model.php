@@ -1954,6 +1954,7 @@ class Purchase_model extends App_Model
         unset($data['total_money']);
         unset($data['additional_discount']);
         unset($data['tax_value']);
+        unset($data['description']);
         if (isset($data['tax_select'])) {
             unset($data['tax_select']);
         }
@@ -2029,7 +2030,7 @@ class Purchase_model extends App_Model
             $data['total'] = $data['grand_total'];
             unset($data['grand_total']);
         }
-
+        // echo '<pre>'; print_r($es_detail); exit;
         $this->db->insert(db_prefix() . 'pur_estimates', $data);
         $insert_id = $this->db->insert_id();
         // $this->send_mail_to_approver($data, 'pur_quotation', 'quotation', $insert_id);
@@ -2064,7 +2065,7 @@ class Purchase_model extends App_Model
                     $dt_data['pur_estimate'] = $insert_id;
                     $dt_data['item_code'] = $rqd['item_code'];
                     $dt_data['unit_id'] = isset($rqd['unit_id']) ? $rqd['unit_id'] : null;
-                    $dt_data['area'] = !empty($rqd['area']) ? implode(',', $rqd['area']) : NULL;
+                    $dt_data['description'] = !empty($rqd['description']) ? $rqd['description'] : NULL;
                     $dt_data['unit_price'] = $rqd['unit_price'];
                     $dt_data['into_money'] = $rqd['into_money'];
                     $dt_data['total'] = $rqd['total'];
@@ -2186,6 +2187,7 @@ class Purchase_model extends App_Model
         unset($data['total_money']);
         unset($data['additional_discount']);
         unset($data['tax_value']);
+        unset($data['description']);
 
         if (isset($data['tax_select'])) {
             unset($data['tax_select']);
@@ -2243,7 +2245,7 @@ class Purchase_model extends App_Model
                 $dt_data['pur_estimate'] = $id;
                 $dt_data['item_code'] = $rqd['item_code'];
                 $dt_data['unit_id'] = isset($rqd['unit_id']) ? $rqd['unit_id'] : null;
-                $dt_data['area'] = !empty($rqd['area']) ? implode(',', $rqd['area']) : NULL;
+                $dt_data['description'] = $rqd['description'];
                 $dt_data['unit_price'] = $rqd['unit_price'];
                 $dt_data['into_money'] = $rqd['into_money'];
                 $dt_data['total'] = $rqd['total'];
@@ -2296,7 +2298,7 @@ class Purchase_model extends App_Model
                 $dt_data['pur_estimate'] = $id;
                 $dt_data['item_code'] = $rqd['item_code'];
                 $dt_data['unit_id'] = isset($rqd['unit_id']) ? $rqd['unit_id'] : null;
-                $dt_data['area'] = !empty($rqd['area']) ? implode(',', $rqd['area']) : NULL;
+                $dt_data['description'] = $rqd['description'];
                 $dt_data['unit_price'] = $rqd['unit_price'];
                 $dt_data['into_money'] = $rqd['into_money'];
                 $dt_data['total'] = $rqd['total'];
@@ -7956,8 +7958,7 @@ class Purchase_model extends App_Model
         <thead>
           <tr>
             <th class="thead-dark">' . _l('items') . '</th>
-            <th class="thead-dark" align="left">' . _l('area') . '</th>
-            <th class="thead-dark" align="left">' . _l('Image') . '</th>
+            <th class="thead-dark" align="left">' . _l('Description') . '</th>
             <th class="thead-dark" align="right">' . _l('purchase_unit_price') . '</th>
             <th class="thead-dark" align="right">' . _l('purchase_quantity') . '</th>';
 
@@ -7975,16 +7976,12 @@ class Purchase_model extends App_Model
             $items = $this->get_items_by_id($row['item_code']);
             $units = $this->get_units_by_id($row['unit_id']);
             $full_item_image = '';
-            if (!empty($row['image'])) {
-                $item_base_url = base_url('uploads/purchase/pur_quotation/' . $row['pur_estimate'] . '/' . $row['id'] . '/' . $row['image']);
-                $full_item_image = '<img class="images_w_table" src="' . $item_base_url . '" alt="' . $row['image'] . '" >';
-            }
+          
             $item_name = isset($items->commodity_code) ? $items->commodity_code . ' - ' . $items->description : $row['item_name'];
 
             $html .= '<tr nobr="true" class="sortable">
             <td >' . $item_name . '</td>
-            <td align="left">' . get_area_name_by_id($row['area'], '') . '</td>
-            <td align="left">' . $full_item_image . '</td>
+            <td align="left">' . $row['description'] . '</td>
             <td align="right">' . app_format_money($row['unit_price'], '') . '</td>
             <td align="right">' . $row['quantity'] . '</td>';
 
@@ -11847,7 +11844,7 @@ class Purchase_model extends App_Model
      *
      * @return     string
      */
-    public function create_quotation_row_template($name = '', $item_name = '', $area = '', $image = '', $quantity = '', $unit_name = '', $unit_price = '', $taxname = '',  $item_code = '', $unit_id = '', $tax_rate = '', $total_money = '', $discount = '', $discount_money = '', $total = '', $into_money = '', $tax_id = '', $tax_value = '', $item_key = '', $is_edit = false, $currency_rate = 1, $to_currency = '', $quote_detail = array())
+    public function create_quotation_row_template($name = '', $item_name = '', $item_description= '',  $quantity = '', $unit_name = '', $unit_price = '', $taxname = '',  $item_code = '', $unit_id = '', $tax_rate = '', $total_money = '', $discount = '', $discount_money = '', $total = '', $into_money = '', $tax_id = '', $tax_value = '', $item_key = '', $is_edit = false, $currency_rate = 1, $to_currency = '', $quote_detail = array())
     {
 
         $this->load->model('invoice_items_model');
@@ -11855,6 +11852,7 @@ class Purchase_model extends App_Model
 
         $name_item_code = 'item_code';
         $name_item_name = 'item_name';
+        $name_description = 'description';
         $name_area = 'area';
         $name_image = 'image';
         $name_unit_id = 'unit_id';
@@ -11899,6 +11897,7 @@ class Purchase_model extends App_Model
                     <td class="dragger"><input type="hidden" class="order" name="' . $name . '[order]"><input type="hidden" class="ids" name="' . $name . '[id]" value="' . $item_key . '"></td>';
             $name_item_code = $name . '[item_code]';
             $name_item_name = $name . '[item_name]';
+            $name_description = $name . '[description]';
             $name_area = $name . '[area][]';
             $name_image = $name . '[image]';
             $name_unit_id = $name . '[unit_id]';
@@ -11955,15 +11954,11 @@ class Purchase_model extends App_Model
             $amount = app_format_number($amount);
         }
 
-        $full_item_image = '';
-        if (!empty($image)) {
-            $item_base_url = base_url('uploads/purchase/pur_quotation/' . $quote_detail['pur_estimate'] . '/' . $quote_detail['id'] . '/' . $quote_detail['image']);
-            $full_item_image = '<img class="images_w_table" src="' . $item_base_url . '" alt="' . $image . '" >';
-        }
+        
 
-        $row .= '<td class="">' . render_textarea($name_item_name, '', $item_name, ['rows' => 2, 'placeholder' => 'Product code name', 'readonly' => true]) . '</td>';
-        $row .= '<td class="area">' . get_area_list($name_area, $area) . '</td>';
-        $row .= '<td class=""><input type="file" extension="' . str_replace(['.', ' '], '', '.png,.jpg,.jpeg') . '" filesize="' . file_upload_max_size() . '" class="form-control" name="' . $name_image . '" accept="' . get_item_form_accepted_mimes() . '">' . $full_item_image . '</td>';
+        $row .= '<td class="">' . render_textarea($name_item_name, '', $item_name, ['rows' => 2, 'placeholder' => 'Enter Item Name']) . '</td>';
+        $row .= '<td class="description">' . render_textarea($name_description, '', $item_description, ['rows' => 2, 'placeholder' => 'Enter Product Description'])  . '</td>';
+        
 
         $row .= '<td class="rate">' . render_input($name_unit_price, '', $unit_price, 'number', $array_rate_attr, [], 'no-margin', $text_right_class);
         if ($unit_price != '') {

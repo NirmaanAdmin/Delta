@@ -676,19 +676,12 @@ function pur_add_item_to_table(data, itemid) {
   var item_key = lastAddedItemKey ? lastAddedItemKey += 1 : $("body").find('.invoice-items-table tbody .item').length + 1;
   lastAddedItemKey = item_key;
   $("body").append('<div class="dt-loader"></div>');
-  pur_get_item_row_template('newitems[' + item_key + ']',data.item_name, data.area, data.image, data.quantity, data.unit_name, data.unit_price, data.taxname, data.item_code, data.unit_id, data.tax_rate, data.discount, itemid, currency_rate, to_currency).done(function(output){
+  pur_get_item_row_template('newitems[' + item_key + ']',data.item_name, data.description, data.quantity, data.unit_name, data.unit_price, data.taxname, data.item_code, data.unit_id, data.tax_rate, data.discount, itemid, currency_rate, to_currency).done(function(output){
     table_row += output;
 
     $('.invoice-item table.invoice-items-table.items tbody').append(table_row);
-    var sourceInput = $("input[name='image']")[0];
-    var targetInput = $("input[name='newitems["+lastAddedItemKey+"][image]']")[0];
-    if (sourceInput.files.length > 0) {
-        var dataTransfer = new DataTransfer();
-        for (var i = 0; i < sourceInput.files.length; i++) {
-            dataTransfer.items.add(sourceInput.files[i]);
-        }
-        targetInput.files = dataTransfer.files;
-    }
+    
+    
     setTimeout(function () {
       pur_calculate_total();
     }, 15);
@@ -710,12 +703,11 @@ function pur_get_item_preview_values() {
 
   var response = {};
   response.item_name = $('.invoice-item .main textarea[name="item_name"]').val();
-  response.area = $('.invoice-item .main select[name="area"]').val();
+  response.description = $('.invoice-item .main textarea[name="description"]').val();
   response.quantity = $('.invoice-item .main input[name="quantity"]').val();
   response.unit_name = $('.invoice-item .main input[name="unit_name"]').val();
   response.unit_price = $('.invoice-item .main input[name="unit_price"]').val();
   response.taxname = $('.main select.taxes').selectpicker('val');
-  response.item_code = $('.invoice-item .main input[name="item_code"]').val();
   response.unit_id = $('.invoice-item .main input[name="unit_id"]').val();
   response.tax_rate = $('.invoice-item .main input[name="tax_rate"]').val();
   response.discount = $('.invoice-item .main input[name="discount"]').val();
@@ -759,7 +751,7 @@ function pur_delete_item(row, itemid,parent) {
   }
 }
 
-function pur_get_item_row_template(name, item_name, area, image, quantity, unit_name, unit_price, taxname,  item_code, unit_id, tax_rate, discount, item_key, currency_rate, to_currency)  {
+function pur_get_item_row_template(name, item_name, description, quantity, unit_name, unit_price, taxname,  item_code, unit_id, tax_rate, discount, item_key, currency_rate, to_currency)  {
   "use strict";
 
   jQuery.ajaxSetup({
@@ -769,8 +761,7 @@ function pur_get_item_row_template(name, item_name, area, image, quantity, unit_
   var d = $.post(admin_url + 'purchase/get_quotation_row_template', {
     name: name,
     item_name : item_name,
-    area : area,
-    image : image,
+    description: description,
     quantity : quantity,
     unit_name : unit_name,
     unit_price : unit_price,

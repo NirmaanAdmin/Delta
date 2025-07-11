@@ -349,9 +349,9 @@
 
 <div class="panel-body mtop10 invoice-item">
   <div class="row">
-    <div class="col-md-4">
+    <!-- <div class="col-md-4">
       <?php $this->load->view('purchase/item_include/main_item_select'); ?>
-    </div>
+    </div> -->
     <?php
     $estimate_currency = $base_currency;
     if (isset($estimate) && $estimate->currency != 0) {
@@ -387,16 +387,15 @@
         <thead>
           <tr>
             <th></th>
-            <th align="left"><i class="fa fa-exclamation-circle" aria-hidden="true" data-toggle="tooltip" data-title="<?php echo _l('item_description_new_lines_notice'); ?>"></i> Product code</th>
-            <th align="right"><?php echo _l('area'); ?></th>
-            <th align="right"><?php echo _l('Image'); ?></th>
-            <th align="right"><?php echo _l('unit_price'); ?><span class="th_currency"><?php echo '(' . $estimate_currency->name . ')'; ?></span></th>
-            <th align="right" class="qty"><?php echo _l('quantity'); ?></th>
-            <th align="right"><?php echo _l('subtotal_before_tax'); ?><span class="th_currency"><?php echo '(' . $estimate_currency->name . ')'; ?></span></th>
-            <th align="right"><?php echo _l('invoice_table_tax_heading'); ?></th>
-            <th align="right"><?php echo _l('tax_value'); ?><span class="th_currency"><?php echo '(' . $estimate_currency->name . ')'; ?></span></th>
-            <th align="right"><?php echo _l('pur_subtotal_after_tax'); ?><span class="th_currency"><?php echo '(' . $estimate_currency->name . ')'; ?></span></th>
-            <th align="right"><?php echo _l('total'); ?><span class="th_currency"><?php echo '(' . $estimate_currency->name . ')'; ?></span></th>
+            <th align="left"> Item Name</th>
+            <th align="left"><?php echo _l('Description'); ?></th>
+            <th align="left"><?php echo _l('unit_price'); ?><span class="th_currency"><?php echo '(' . $estimate_currency->name . ')'; ?></span></th>
+            <th align="left" class="qty"><?php echo _l('quantity'); ?></th>
+            <th align="left"><?php echo _l('subtotal_before_tax'); ?><span class="th_currency"><?php echo '(' . $estimate_currency->name . ')'; ?></span></th>
+            <th align="left"><?php echo _l('invoice_table_tax_heading'); ?></th>
+            <th align="left"><?php echo _l('tax_value'); ?><span class="th_currency"><?php echo '(' . $estimate_currency->name . ')'; ?></span></th>
+            <th align="left"><?php echo _l('pur_subtotal_after_tax'); ?><span class="th_currency"><?php echo '(' . $estimate_currency->name . ')'; ?></span></th>
+            <th align="left"><?php echo _l('total'); ?><span class="th_currency"><?php echo '(' . $estimate_currency->name . ')'; ?></span></th>
             <th align="center"><i class="fa fa-cog"></i></th>
           </tr>
         </thead>
