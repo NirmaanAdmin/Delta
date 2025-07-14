@@ -63,9 +63,9 @@ if ($estimate->currency != 0) {
          </div>
          <div class="row">
             <div class="col-md-6">
-               <p class="bold mtop15"><strong><?php echo _l('pur_request') . ':</strong> ' ?><a href="<?php echo admin_url('purchase/pur_request/' . $estimate->pur_request->id); ?>"> <?php echo $estimate->pur_request->pur_rq_code . ' - ' . pur_html_entity_decode($estimate->pur_request->pur_rq_name); ?></a></p>
+               <!-- <p class="bold mtop15"><strong><?php echo _l('pur_request') . ':</strong> ' ?><a href="<?php echo admin_url('purchase/pur_request/' . $estimate->pur_request->id); ?>"> <?php echo $estimate->pur_request->pur_rq_code . ' - ' . pur_html_entity_decode($estimate->pur_request->pur_rq_name); ?></a></p> -->
                <p class="bold mtop15"><strong><?php echo _l('vendor') . ':</strong> ' ?><a href="<?php echo admin_url('purchase/vendor/' . $estimate->vendor->userid); ?>"><?php echo pur_html_entity_decode($estimate->vendor->company); ?></a></p>
-               <p class="bold p_mar"><strong><?php echo _l('group_pur') . ':</strong> ' ?> <?php foreach ($commodity_groups_pur as $group) {
+               <!-- <p class="bold p_mar"><strong><?php echo _l('group_pur') . ':</strong> ' ?> <?php foreach ($commodity_groups_pur as $group) {
                                                                                                 if ($group['id'] == $estimate->group_pur) {
                                                                                                    echo $group['name'];
                                                                                                 }
@@ -79,7 +79,7 @@ if ($estimate->currency != 0) {
                                                                                              if ($area['id'] == $estimate->area_pur) {
                                                                                                 echo $area['area_name'];
                                                                                              }
-                                                                                          } ?> </p>
+                                                                                          } ?> </p> -->
                <p class="bold p_mar"><strong><?php echo _l('Validity') . ':</strong> ' ?> <?php echo date('d M, Y', strtotime($estimate->expirydate)); ?> </p>
                <p class="bold p_mar"><strong><?php echo _l('Buyer') . ':</strong> ' ?> <?php foreach ($staff as $member) {
                                                                                           if ($member['staffid'] == $estimate->buyer) {

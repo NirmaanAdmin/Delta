@@ -17,11 +17,8 @@ $aColumns = [
     db_prefix() . 'pur_estimates.total_tax',
     'YEAR(date) as year',
     'vendor',
-    'pur_request',
-    'group_name',
-    'sub_group_name',
-    // 'area_name',
-    'date',
+    // 'pur_request',
+    db_prefix() . 'pur_estimates.datecreated as date',
     'expirydate',
 
     db_prefix() . 'pur_estimates.project',
@@ -208,15 +205,8 @@ foreach ($rResult as $aRow) {
         $row[] = $aRow['deleted_vendor_name'];
     }
 
-    $row[] = '<a href="' . admin_url('purchase/view_pur_request/' . $aRow['pur_request']) . '" onclick="init_pur_estimate(' . $aRow['id'] . '); return false;">' . $aRow['pur_rq_code'] . '</a>';
 
-    $row[] = $aRow['group_name'];;
-
-    $row[] = $aRow['sub_group_name'];
-
-    // $row[] = $aRow['area_name'];
-
-    $row[] = _d($aRow['date']);
+    $row[] = date('d M, Y H:i A', strtotime($aRow['date']));
 
     $row[] = _d($aRow['expirydate']);
 

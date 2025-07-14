@@ -9,7 +9,7 @@ $module_name = 'quotations';
         <a href="<?php echo admin_url('purchase/estimate'); ?>" class="btn btn-info pull-left new"><?php echo _l('create_new_estimate'); ?></a>
       <?php } ?>
       <div class="row all_ot_filters">
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
 
           <?php
           $pur_request_type_filter = get_module_filter($module_name, 'pur_request');
@@ -24,7 +24,7 @@ $module_name = 'quotations';
               </option>
             <?php } ?>
           </select>
-        </div>
+        </div> -->
 
         <div class="col-md-3">
           <?php
@@ -58,26 +58,7 @@ $module_name = 'quotations';
           </select>
         </div>
 
-        <div class="display-block text-right">
-          <a href="#" class="btn btn-default btn-with-tooltip toggle-small-view hidden-xs" onclick="toggle_small_estimate_view('.table-pur_estimates','#estimate'); return false;" data-toggle="tooltip" title="<?php echo _l('estimates_toggle_table_tooltip'); ?>"><i class="fa fa-angle-double-left"></i></a>
-        </div>
-
-        <div class="col-md-3 form-group" style="margin-top: 10px;">
-          <?php
-          $group_pur_type_filter = get_module_filter($module_name, 'group_pur');
-          $group_pur_type_filter_val = !empty($group_pur_type_filter) ? explode(",", $group_pur_type_filter->filter_value) : [];
-          echo render_select('group_pur[]', $item_group, array('id', 'name'), '', $group_pur_type_filter_val, array('data-width' => '100%', 'data-none-selected-text' => _l('group_pur'), 'multiple' => true, 'data-actions-box' => true), array(), 'no-mbot', '', false); ?>
-        </div>
-
-        <div class="col-md-3 form-group" style="margin-top: 10px;">
-          <?php
-          $sub_groups_pur_type_filter = get_module_filter($module_name, 'sub_groups_pur');
-          $sub_groups_pur_type_filter_val = !empty($sub_groups_pur_type_filter) ? explode(",", $sub_groups_pur_type_filter->filter_value) : [];
-          echo render_select('sub_groups_pur[]', $item_sub_group, array('id', 'sub_group_name'), '', $sub_groups_pur_type_filter_val, array('data-width' => '100%', 'data-none-selected-text' => _l('sub_groups_pur'), 'multiple' => true, 'data-actions-box' => true), array(), 'no-mbot', '', false);
-          ?>
-        </div>
-
-        <div class="col-md-3 form-group" style="margin-top: 10px;">
+        <div class="col-md-3 form-group" >
 
           <?php
           $approval_status_type_filter = get_module_filter($module_name, 'status');
@@ -91,11 +72,19 @@ $module_name = 'quotations';
           echo render_select('status[]', $statuses, array('id', 'name'), '', $approval_status_type_filter_val, array('data-width' => '100%', 'data-none-selected-text' => _l('approval_status'), 'multiple' => true, 'data-actions-box' => true), array(), 'no-mbot', '', false); ?>
         </div>
 
-        <div class="col-md-1 form-group " style="margin-top: 10px;">
+        <div class="col-md-1 form-group " >
           <a href="javascript:void(0)" class="btn btn-info btn-icon reset_all_ot_filters">
             <?php echo _l('reset_filter'); ?>
           </a>
         </div>
+
+        <div class="display-block text-right">
+          <a href="#" class="btn btn-default btn-with-tooltip toggle-small-view hidden-xs" onclick="toggle_small_estimate_view('.table-pur_estimates','#estimate'); return false;" data-toggle="tooltip" title="<?php echo _l('estimates_toggle_table_tooltip'); ?>"><i class="fa fa-angle-double-left"></i></a>
+        </div>
+
+
+
+
       </div>
     </div>
   </div>
@@ -123,9 +112,9 @@ $module_name = 'quotations';
                 'estimates_total_tax',
                 'invoice_estimate_year',
                 'vendor',
-                'pur_request',
-                'group_pur',
-                'sub_groups_pur',
+                // 'pur_request',
+                // 'group_pur',
+                // 'sub_groups_pur', 
                 'estimate_dt_table_heading_date',
                 'estimate_dt_table_heading_expirydate',
                 'project',
