@@ -204,11 +204,13 @@
                                  <th><?php echo _l('Item Scope'); ?></th>
                                  <th><?php echo _l('Quantity'); ?></th>
                                  <th><?php echo _l('Rate'); ?></th>
+                                 <th><?php echo _l('Upload Attachment') ?></th>
+                                 <th><?php echo _l('Dowanload Attachment') ?></th>
                                  <th><?php echo _l('Owner Company'); ?></th>
                                  <th><?php echo _l('Status'); ?></th>
                               </tr>
                            </thead>
-                           <tbody>
+                           <tbody> 
                            </tbody>
                         </table>
                      </div>

@@ -43,7 +43,6 @@ var expenseDropzone;
 
     $(document).on('click', '.upload_order_tracker_attachments', function () {
         var rowId = $(this).data('id');
-        var source = $(this).data('source');
         var input = $(this).closest('.input-group').find('.upload_order_tracker_files')[0];
         if (!input.files.length) {
             alert_float('warning', "Please select at least one file to upload.");
@@ -54,7 +53,6 @@ var expenseDropzone;
             formData.append('attachments[]', input.files[i]);
         }
         formData.append('id', rowId);
-        formData.append('source', source);
         formData.append("csrf_token_name", $('input[name="csrf_token_name"]').val());
         $.ajax({
             url: admin_url + 'purchase/upload_order_tracker_attachments',

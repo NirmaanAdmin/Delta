@@ -15,6 +15,8 @@ $aColumns = [
     'item_scope',
     'quantity',
     'rate',
+    1,
+    2,
     'owners_company',
     db_prefix() . 'pur_order_tracker.status as order_status'
 ];
@@ -248,7 +250,32 @@ foreach ($rResult as $aRow) {
                          data-id="' . $aRow['id'] . '" >';
     }
     $row[] = $rate_html;
-
+    $upload_attachment_html = $_data = '
+            <div class="input-group" style="width: 100%;">
+               <input type="file" 
+                      name="attachments[]" 
+                      class="form-control upload_order_tracker_files" 
+                      data-id="' . $aRow['id'] . '" 
+                      multiple 
+                      style="min-width: 200px; width: 100%;">
+               <span class="input-group-btn">
+                  <button type="button" 
+                          class="btn btn-success upload_order_tracker_attachments" 
+                          data-id="' . $aRow['id'] . '" 
+                          title="Upload Attachments">
+                     <i class="fa fa-upload"></i>
+                  </button>
+               </span>
+            </div>
+         ';
+    $row[] = $upload_attachment_html;
+    $this->ci->load->model('purchase/purchase_model');
+    $attachments = $this->ci->purchase_model->get_order_tracker_attachments($aRow['id'],'order_tracker');
+    $file_html = '';
+    if (!empty($attachments)) {
+        $file_html = '<a href="javascript:void(0)" onclick="view_order_tracker_attachments(' . $aRow['id'] . ', \'order_tracker\'); return false;" class="btn btn-info btn-icon">View Files</a>';
+    }
+    $row[] = $file_html;
     // Owner Company
     $owners_company_raw = trim($aRow['owners_company']);
     if ($owners_company_raw !== '') {

@@ -20450,12 +20450,12 @@ class Purchase_model extends App_Model
 
     public function upload_order_tracker_attachments($input)
     {
-        $uploadedFiles = handle_order_tracker_attachments_array($input['source'], $input['id']);
+        $uploadedFiles = handle_order_tracker_attachments_array('order_tracker', $input['id']);
         if ($uploadedFiles && is_array($uploadedFiles)) {
             foreach ($uploadedFiles as $file) {
                 $data = array();
                 $data['dateadded'] = date('Y-m-d H:i:s');
-                $data['rel_type'] = $input['source'];
+                $data['rel_type'] = 'order_tracker';
                 $data['rel_id'] = $input['id'];
                 $data['staffid'] = get_staff_user_id();
                 $data['attachment_key'] = app_generate_hash();
