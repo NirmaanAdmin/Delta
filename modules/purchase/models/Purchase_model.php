@@ -7858,7 +7858,7 @@ class Purchase_model extends App_Model
      */
     public function get_purestimate_pdf_html($pur_estimate_id)
     {
-
+        $this->load->model('projects_model');
 
         $pur_estimate = $this->get_estimate($pur_estimate_id);
         $pur_estimate_detail = $this->get_pur_estimate_detail($pur_estimate_id);
@@ -7876,8 +7876,9 @@ class Purchase_model extends App_Model
         $tax_data = $this->get_html_tax_pur_estimate($pur_estimate_id);
         $logo = '';
         $company_logo = get_option('company_logo_dark');
-        if (!empty($company_logo)) {
-            $logo = '<img src="' . base_url('uploads/company/' . $company_logo) . '" width="230" height="100">';
+        $get_owners_company_logo = $this->projects_model->get_project_logo($pur_estimate->project);
+        if (!empty($get_owners_company_logo)) {
+            $logo = '<img src="' . base_url('uploads/projects_logo/' . $get_owners_company_logo->project_id . '/' . $get_owners_company_logo->file_name) . '" width="230" height="100">';
         }
         $get_owners_company_details = get_project_details_by_id($pur_estimate->project);
         $html = '<table class="table">
