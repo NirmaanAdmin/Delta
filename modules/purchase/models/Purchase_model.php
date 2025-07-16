@@ -7878,7 +7878,7 @@ class Purchase_model extends App_Model
         $company_logo = get_option('company_logo_dark');
         $get_owners_company_logo = $this->projects_model->get_project_logo($pur_estimate->project);
         if (!empty($get_owners_company_logo)) {
-            $logo = '<img src="' . base_url('uploads/projects_logo/' . $get_owners_company_logo->project_id . '/' . $get_owners_company_logo->file_name) . '" width="230" height="100">';
+            $logo = '<img src="' . get_upload_path_by_type('project_logo') . $get_owners_company_logo->project_id . '/' . $get_owners_company_logo->file_name . '" width="230" height="100">';
         }
         $get_owners_company_details = get_project_details_by_id($pur_estimate->project);
         $html = '<table class="table">
